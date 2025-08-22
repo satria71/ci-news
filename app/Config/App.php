@@ -18,7 +18,7 @@ class App extends BaseConfig
      */
     // public string $baseURL = 'http://192.168.130.211:8080/';
     // public string $baseURL = base;
-    public string $baseURL = '';
+    public string $baseURL = BASE;
 
     public function __construct()
     {
