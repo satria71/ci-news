@@ -16,8 +16,20 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://192.168.130.211/';
+    // public string $baseURL = 'http://192.168.130.211:8080/';
     // public string $baseURL = base;
+    public string $baseURL = '';
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $script = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+
+        $this->baseURL = rtrim($scheme . '://' . $host . $script, '/') . '/';
+    }
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
      * If you want to accept multiple Hostnames, set this.
