@@ -68,7 +68,7 @@
                             </td>
                         </tr>
                         <?php endforeach ?>
-                        </tbody></table>
+                        </tbody>
                     </table>
                 </div>
             </div>

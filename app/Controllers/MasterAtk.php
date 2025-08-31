@@ -16,6 +16,8 @@ class MasterAtk extends BaseController
         //manual
         $query = $this->db->query("SELECT * FROM master_atk");
         $data['master_atk'] = $query->getResult();
+        // $data['master_atk'] = $query->getResultArray();
+        // $data1 = $this->response->setJSON($data);
         return view('atk/getmasteratk', $data);
     }
 
