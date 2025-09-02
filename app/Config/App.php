@@ -17,10 +17,10 @@ class App extends BaseConfig
      * E.g., http://example.com/
      */
     // untuk local development
-    public string $baseURL = 'http://localhost:8080/';
+    // public string $baseURL = 'http://localhost:8080/';
 
     // untuk server
-    // public string $baseURL = BASE;
+    public string $baseURL = BASE;
 
     // public function __construct()
     // {
