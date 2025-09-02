@@ -8,18 +8,17 @@ class MasterAtk extends BaseController
     {
         //query builder
         $db      = \Config\Database::connect();
-        // $builder = $db->table('master_atk'); 
-        // $query = $builder->get()->getResult();
-        // $data ['master_atk'] = $query;
-        // return view('atk/getmasteratk', $data);
-
-        //manual
-        $query = $this->db->query("SELECT * FROM master_atk");
-        $data['master_atk'] = $query->getResult();
-        // $data['master_atk'] = $query->getResultArray();
-        // $data1 = $this->response->setJSON($data);
+        $builder = $db->table('master_atk'); 
+        $query = $builder->get()->getResult();
+        $data ['master_atk'] = $query;
         return view('atk/getmasteratk', $data);
+
+        // //manual
+        // $query = $this->db->query("SELECT * FROM master_atk");
+        // $data['master_atk'] = $query->getResult();
+        // return view('atk/getmasteratk');
     }
+
 
     public function create()
     {

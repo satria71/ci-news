@@ -15,6 +15,7 @@ $routes->get('auth/logout', 'Auth::logout');
 $routes->get('/', 'Home::index');
 // $routes->addRedirect('/', 'home');
 $routes->get('masteratk', 'MasterAtk::index');
+// $routes->get('masteratk/show', 'MasterAtk::getData');
 //read
 $routes->get('masteratk/add', 'MasterAtk::create');
 //create

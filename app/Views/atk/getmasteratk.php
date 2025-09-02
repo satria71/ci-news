@@ -40,34 +40,37 @@
                 </div>
                 
                 <div class="card-body table-responsive">
-                    <table class="table table-striped table-md">
-                        <tbody><tr>
-                            <th>No.</th>
-                            <th>Nama Barang</th>
-                            <th>Harga</th>
-                            <th>Satuan</th>
-                            <th>Tanggal Tambah</th>
-                            <th>Action</th>
-                        </tr>
+                    <table class="table table-striped table-md" id="myTable">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama Barang</th>
+                                <th>Harga</th>
+                                <th>Satuan</th>
+                                <th>Tanggal Tambah</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <?php foreach ($master_atk as $key => $value) : ?>
-                        <tr>
-                            <td><?=$key + 1?></td>
-                            <td><?=$value->nama_barang?></td>
-                            <td><?=$value->harga?></td>
-                            <td><?=$value->satuan?></td>
-                            <td><?=date('d/m/Y',strtotime($value->tgl_tambah))?></td>
-                            <td class="text-center" style="width:12%">
-                                <a href="<?=site_url('masteratk/edit/'.$value->id_barang_atk)?>" class="btn btn-warning btn sm"><i class="fas fa-pencil-alt"></i></a>
-                                <form action="<?=site_url('masteratk/'.$value->id_barang_atk)?>" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="btn btn-danger btn sm">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php endforeach ?>
+                            <tr>
+                                <td><?=$key + 1?></td>
+                                <td><?=$value->nama_barang?></td>
+                                <td><?=$value->harga?></td>
+                                <td><?=$value->satuan?></td>
+                                <td><?=date('d/m/Y',strtotime($value->tgl_tambah))?></td>
+                                <td class="text-center" style="width:12%">
+                                    <a href="<?=site_url('masteratk/edit/'.$value->id_barang_atk)?>" class="btn btn-warning btn sm"><i class="fas fa-pencil-alt"></i></a>
+                                    <form action="<?=site_url('masteratk/'.$value->id_barang_atk)?>" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button class="btn btn-danger btn sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endforeach ?>
                         </tbody>
                     </table>
                 </div>
