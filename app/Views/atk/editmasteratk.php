@@ -26,11 +26,11 @@
                         <input type="hidden" name="_method" value="PUT">
                         <div class="form-group">
                             <label>ID Barang</label>
-                            <input type="text" name="id_barang_atk" value="<?=$master_atk->id_barang_atk?>" class="form-control" required autofocus>
+                            <input type="text" name="id_barang_atk" value="<?=$master_atk->id_barang_atk?>" class="form-control" readonly="true" disabled>
                         </div>
                         <div class="form-group">
                             <label>Nama Barang</label>
-                            <input type="text" name="nama_barang" value="<?=$master_atk->nama_barang?>" class="form-control">
+                            <input type="text" name="nama_barang" value="<?=$master_atk->nama_barang?>" class="form-control" autofocus>
                         </div>
                         <div class="form-group">
                             <label>Harga</label>

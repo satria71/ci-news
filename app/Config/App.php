@@ -16,9 +16,32 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    // public string $baseURL = 'http://192.168.130.211:8080/';
-    // public string $baseURL = base;
-    public string $baseURL = BASE;
+    //untul local development
+    public string $baseURL = 'http://localhost:8080/';
+    // public string $baseURL = '';
+
+    // $baseURL = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+    // $baseURL .= "://" . $_SERVER['HTTP_HOST'];
+    // $baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+
+    
+//     public string $baseURL = '';
+
+// public function __construct()
+// {
+//     parent::__construct();   
+
+//     // auto detect base url
+//     $baseURL  = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+//     $baseURL .= "://" . $_SERVER['HTTP_HOST'];
+//     $baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+
+//     $this->baseURL = rtrim($baseURL, '/');
+// }
+
+    
+    //untuk server
+    // public string $baseURL = BASE;
 
     // public function __construct()
     // {
@@ -52,7 +75,7 @@ class App extends BaseConfig
      * something else. If you have configured your web server to remove this file
      * from your site URIs, set this variable to an empty string.
      */
-    public string $indexPage = 'index.php';
+    public string $indexPage = '';
 
     /**
      * --------------------------------------------------------------------------
