@@ -29,19 +29,19 @@
                         </div>
                         <div class="form-group">
                             <label>Nama Barang</label>
-                            <input type="text" name="nama_barang" class="form-control">
+                            <input type="text" name="nama_barang" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Harga</label>
-                            <input type="text" name="harga" class="form-control">
+                            <input type="text" name="harga" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Satuan</label>
-                            <input type="text" name="satuan" class="form-control">
+                            <input type="text" name="satuan" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Tambah</label>
-                            <input type="date" name="tgl_tambah" class="form-control">
+                            <input type="date" name="tgl_tambah" class="form-control" required>
                         </div>
                         <div>
                             <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane"> Tambah</i></button>

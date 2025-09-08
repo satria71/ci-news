@@ -5,6 +5,11 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+
+// kalau mau improved, aktifkan di Config\Feature.php
+// $autoRoutesImproved = true;
+// $routes->resource('masteratk');
+
 //login
 $routes->get('auth', 'Auth::index');
 $routes->get('login', 'Auth::login');
@@ -25,8 +30,24 @@ $routes->get('masteratk/edit/(:any)', 'MasterAtk::edit/$1');
 $routes->put('masteratk/(:any)', 'MasterAtk::update/$1');
 //delete
 $routes->delete('masteratk/(:any)', 'MasterAtk::delete/$1');
+$routes->post('masteratk/delete', 'MasterAtk::delete');
+
 
 //ATK Datang
 $routes->get('atk/datang', 'AtkDatang::index');
 
+//voucher
+$routes->get('voucher', 'Voucher::index');
+$routes->get('voucher/formtambah', 'voucher::formtambah');
+$routes->post('voucher/simpandata', 'voucher::simpandata');
+//update
+$routes->get('voucher/formedit/(:any)', 'voucher::formedit/$1');
+$routes->put('voucher/(:any)', 'voucher::update/$1');
+
+// $routes->post('masteratk/dt_masteratk', 'MasterAtk::dt_masteratk');
+$routes->match(['get', 'post'], 'masteratk/dt_masteratk', 'Masteratk::dt_masteratk');
+$routes->post('masteratk/proseseditdata', 'MasterAtk::proseseditdata');
+$routes->get('masteratk/editdata/(:num)', 'MasterAtk::editdata/$1');
+// $routes->post('masteratk/save', 'Masteratk::save');
+$routes->match(['get','post'], 'masteratk/save', 'Masteratk::save');
 

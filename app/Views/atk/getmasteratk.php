@@ -34,16 +34,22 @@
             <div class="card">
                 <div class="card-header">
                     <h4>Data ATK</h4>
-                    <div class="section-header-button">
-                        <a href="<?=site_url('masteratk/add')?>" class="btn btn-primary">Add New</a>
-                    </div>
+                    <button type="button" class="btn btn-sm btn-primary" id="btnAdd">
+                        <i class="fas fa-plus"> Tambah</i>
+                    </button>
+
+                    <!-- <div class="section-header-button" id="btnAdd">
+                        <a href="" class="btn btn-primary">Add New</a>
+                    </div> -->
+
                 </div>
                 
                 <div class="card-body table-responsive">
-                    <table class="table table-striped table-md" id="myTable">
+                    <table class="table table-striped table-sm" id="tbMain">
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Kode Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Harga</th>
                                 <th>Satuan</th>
@@ -51,30 +57,52 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        <?php foreach ($master_atk as $key => $value) : ?>
-                            <tr>
-                                <td><?=$key + 1?></td>
-                                <td><?=$value->nama_barang?></td>
-                                <td><?=$value->harga?></td>
-                                <td><?=$value->satuan?></td>
-                                <td><?=date('d/m/Y',strtotime($value->tgl_tambah))?></td>
-                                <td class="text-center" style="width:12%">
-                                    <a href="<?=site_url('masteratk/edit/'.$value->id_barang_atk)?>" class="btn btn-warning btn sm"><i class="fas fa-pencil-alt"></i></a>
-                                    <form action="<?=site_url('masteratk/'.$value->id_barang_atk)?>" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn sm">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <?php endforeach ?>
-                        </tbody>
+                        
                     </table>
                 </div>
             </div>
         </div>
     </section>
+
+        <div class="modal fade" id="modalForm" tabindex="-1" aria-labelledby="modaltitle" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="formData">
+                        <div class="modal-header">
+                            <h5 id="modaltitle"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="id">
+                            <div class="form-group mb-2">
+                                <label>Kode Barang</label>
+                                <input type="text" name="kode_barang" class="form-control" id="kode_barang">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label>Nama Barang</label>
+                                <input type="text" name="nama_barang" class="form-control" id="nama_barang">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label>Harga</label>
+                                <input type="number" name="harga" class="form-control" id="harga">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label>Satuan</label>
+                                <input type="text" name="satuan" class="form-control" id="satuan">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label>Tanggal Tambah</label>
+                                <input type="date" name="tgl_tambah" class="form-control" id="tgl_tambah">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 <?= $this->endSection()?>
