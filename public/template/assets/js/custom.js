@@ -284,7 +284,3 @@ $(document).ready(function () {
 function reload_dt() {
     dtIn.ajax.reload(null, false);
 }
-//datatables
-$(document).ready( function () {
-    $('#myTable').DataTable();
-} );
