@@ -124,3 +124,37 @@ _modules/*
 
 /results/
 /phpunit*.xml
+
+
+# === CodeIgniter 4 ===
+
+# Environment file
+.env
+
+# Cache & Logs
+writable/cache/
+writable/logs/
+
+# Session & Uploads (kalau tidak mau diikutkan Git)
+writable/session/
+public/uploads/
+
+# === Composer ===
+/vendor/
+
+# === Node ===
+/node_modules/
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === OS / System ===
+.DS_Store
+Thumbs.db
+
+# === Misc ===
+*.log
+*.tmp
