@@ -45,7 +45,7 @@ $routes->get('voucher/formedit/(:any)', 'voucher::formedit/$1');
 $routes->put('voucher/(:any)', 'voucher::update/$1');
 
 // $routes->post('masteratk/dt_masteratk', 'MasterAtk::dt_masteratk');
-$routes->match(['get', 'post'], 'masteratk/dt_masteratk', 'Masteratk::dt_masteratk');
+$routes->match(['get', 'post'], 'masteratk/dt_masteratk', 'MasterAtk::dt_masteratk');
 $routes->post('masteratk/proseseditdata', 'MasterAtk::proseseditdata');
 $routes->get('masteratk/editdata/(:num)', 'MasterAtk::editdata/$1');
 // $routes->post('masteratk/save', 'Masteratk::save');
