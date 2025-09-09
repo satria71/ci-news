@@ -49,5 +49,5 @@ $routes->match(['get', 'post'], 'masteratk/dt_masteratk', 'MasterAtk::dt_mastera
 $routes->post('masteratk/proseseditdata', 'MasterAtk::proseseditdata');
 $routes->get('masteratk/editdata/(:num)', 'MasterAtk::editdata/$1');
 // $routes->post('masteratk/save', 'Masteratk::save');
-$routes->match(['get','post'], 'masteratk/save', 'Masteratk::save');
+$routes->match(['get','post'], 'masteratk/save', 'MasterAtk::save');
 
