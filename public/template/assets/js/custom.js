@@ -96,102 +96,6 @@ $(document).ready(function () {
         });
     });
 
-    // event listener tombol edit
-    // contoh tombol tambah
-
-    // contoh tombol edit dari DataTable
-    // $('#tbMain').on('click', '#edit', function() {
-    //     let detail = $(this).data('detail');
-
-
-    //     $('#modaltitle').text('Edit Data');
-    //     $('#id').val(detail.id_barang_atk);
-    //     $('#nama').val(detail.nama_barang);
-
-    //     // isi field lain
-    //     $('#harga').val(detail.harga);
-    //     $('#satuan').val(detail.satuan);
-    //     $('#tgltambah').val(detail.tgl_tambah);
-    //     console.log(detail);
-    //     // $('#title').val(detail.title);
-    //     // $('#start_date').val(detail.start_date);
-    //     // $('#end_date').val(detail.end_date);
-    //     // // $('#user_group_id').val(detail.user_group_id).trigger('change');
-    //     // $('#user_group_id').val(detail.group_ids).trigger('change');
-    //     // // $('#detail_subtest').val(detail.detail_subtest);
-
-    //     $('#modalForm').modal('show');
-
-    //     // load group question lewat ajax
-    //     $.ajax({
-    //         url: "masteratk/editdata/" + detail.id_barang_atk,
-    //         type: "GET",
-    //         dataType: "json",
-    //         success: function(res) {
-    //             let $select = $("#modalForm");
-    //             $select.empty();
-
-    //             $.each(res, function(i, item) {
-    //                 $select.append(
-    //                     $("<option>", {
-    //                         value: item.id,
-    //                         text: item.name
-    //                     })
-    //                 );
-    //             });
-
-    //             // kalau di detail ada group_ids, auto select
-    //             if (detail.pool_group_ids) {
-    //                 let ids = detail.pool_group_ids.split(',').map(id => id.trim()); // jadi array ["2","6"]
-    //                 $select.val(ids).trigger("change");
-    //             }
-
-    //         },
-    //         error: function() {
-    //             notyf.error("Gagal ambil data group questions");
-    //         }
-    //     });
-    // });
-
-    //Edit
-    //     $('#tbMain').on('click', '#edit', function () {
-    //     let detail = $(this).data('detail');
-    //     console.log(detail);
-
-    //     // isi judul modal
-    //     $('#modaltitle').text('Edit Data');
-
-    //     // isi field dari data-detail
-    //     $('#id_barang_atk').val(detail.id_barang_atk);
-    //     $('#nama_barang').val(detail.nama_barang);
-    //     $('#harga').val(detail.harga);
-    //     $('#satuan').val(detail.satuan);
-    //     $('#tgl_tambah').val(detail.tgl_tambah);
-
-    //     // tampilkan modal
-    //     $('#modalForm').modal('show');
-
-    //     // kalau memang butuh data tambahan dari server, gunakan ini:
-    //     $.ajax({
-    //         url: "masteratk/editdata/" + detail.id_barang_atk,
-    //         type: "GET",
-    //         dataType: "json",
-    //         success: function (res) {
-    //             console.log("Data dari server:", res);
-
-    //             // contoh kalau mau update field dari server
-    //             $('#id_barang_atk').val(res.id_barang_atk);
-    //             $('#nama_barang').val(res.nama_barang);
-    //             $('#harga').val(res.harga);
-    //             $('#satuan').val(res.satuan);
-    //             $('#tgl_tambah').val(res.tgl_tambah);
-    //         },
-    //         error: function () {
-    //             notyf.error("Gagal ambil data dari server");
-    //         }
-    //     });
-    // });
-
     // Tambah Data
     $('#btnAdd').on('click', function () {
         $('#modaltitle').text('Tambah Data');
@@ -207,9 +111,12 @@ $(document).ready(function () {
         $('#id').val(detail.id);
         $('#kode_barang').val(detail.kode_barang);
         $('#nama_barang').val(detail.nama_barang);
+        $('#stok').val(detail.stok);
+        $('#pkm').val(detail.pkm);
         $('#harga').val(detail.harga);
         $('#satuan').val(detail.satuan);
         $('#tgl_tambah').val(detail.tgl_tambah);
+        
 
         $('#modalForm').modal('show');
     });
@@ -249,29 +156,6 @@ $(document).ready(function () {
                         }
                     });
                 }
-
-                // if (res.status === 'success') {
-                //     swal({
-                //         icon: "success",
-                //         title: "Berhasil dihapus!",
-                //         text: res.message,
-                //         button: {
-                //             text: "OK",
-                //             className: "btn btn-success waves-effect"
-                //         }
-                //     });
-                //     reload_dt();
-                // } else {
-                //     swal({
-                //         icon: "error",
-                //         title: "Gagal",
-                //         text: res.message || 'Terjadi kesalahan saat menghapus.',
-                //         button: {
-                //             text: "OK",
-                //             className: "btn btn-danger waves-effect"
-                //         }
-                //     });
-                // }
             },
             error: function (xhr) {
                 notyf.error("Terjadi kesalahan server");

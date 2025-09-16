@@ -33,6 +33,14 @@
                             <input type="text" name="nama_barang" value="<?=$master_atk->nama_barang?>" class="form-control" autofocus>
                         </div>
                         <div class="form-group">
+                            <label>Stok</label>
+                            <input type="text" name="stok" value="<?=$master_atk->stok?>" class="form-control" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label>Pkm</label>
+                            <input type="text" name="pkm" value="<?=$master_atk->pkm?>" class="form-control" autofocus>
+                        </div>
+                        <div class="form-group">
                             <label>Harga</label>
                             <input type="text" name="harga" value="<?=$master_atk->harga?>" class="form-control">
                         </div>

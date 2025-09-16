@@ -51,6 +51,8 @@
                                 <th>No.</th>
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
+                                <th>Stok</th>
+                                <th>Pkm</th>
                                 <th>Harga</th>
                                 <th>Satuan</th>
                                 <th>Tanggal Tambah</th>
@@ -85,6 +87,14 @@
                                 <input type="text" name="nama_barang" class="form-control" id="nama_barang">
                             </div>
                             <div class="form-group mb-2">
+                                <label>Stok</label>
+                                <input type="number" name="stok" class="form-control" id="stok">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label>Pkm</label>
+                                <input type="number" name="pkm" class="form-control" id="pkm">
+                            </div>
+                            <div class="form-group mb-2">
                                 <label>Harga</label>
                                 <input type="number" name="harga" class="form-control" id="harga">
                             </div>
@@ -92,10 +102,10 @@
                                 <label>Satuan</label>
                                 <input type="text" name="satuan" class="form-control" id="satuan">
                             </div>
-                            <div class="form-group mb-2">
+                            <!-- <div class="form-group mb-2">
                                 <label>Tanggal Tambah</label>
                                 <input type="date" name="tgl_tambah" class="form-control" id="tgl_tambah">
-                            </div>
+                            </div> -->
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -27,6 +27,8 @@
   <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/style.css">
   <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/components.css">
   <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/custom.css">
+
+  <script src="<?=base_url()?>/template/node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 
 <body>
@@ -107,7 +109,7 @@
   
 
   <!-- General JS Scripts -->
-  <script src="<?=base_url()?>/template/node_modules/jquery/dist/jquery.min.js"></script>
+  <!-- <script src="<?=base_url()?>/template/node_modules/jquery/dist/jquery.min.js"></script> -->
   <script src="<?=base_url()?>/template/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="<?=base_url()?>/template/node_modules/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
   <script src="<?=base_url()?>/template/assets/js/stisla.js"></script>

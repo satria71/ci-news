@@ -34,6 +34,8 @@ class MasterAtk extends BaseController
         $data = [
             'id' => $this->request->getVar('id'),
             'nama_barang' => $this->request->getVar('nama_barang'),
+            'stok' => $this->request->getVar('stok'),
+            'pkm' => $this->request->getVar('pkm'),
             'harga' => $this->request->getVar('harga'),
             'satuan' => $this->request->getVar('satuan'),
             'tgl_tambah' => $this->request->getVar('tgl_tambah'),
@@ -119,37 +121,6 @@ class MasterAtk extends BaseController
         }
     }
 
-    public function proseseditdata(){
-
-        $id     = $this->request->getPost('id');
-        $nama   = $this->request->getPost('nama_barang');
-        $harga  = $this->request->getPost('harga');
-        $satuan = $this->request->getPost('satuan');
-        $tgl    = $this->request->getPost('tgl_tambah');
-
-        log_message('debug', 'POST DATA: ' . json_encode($this->request->getPost()));
-
-        $builder = $this->db->table('master_atk');
-        $update = $builder->where('id', $id)->update([
-            'nama_barang' => $nama,
-            'harga'       => $harga,
-            'satuan'      => $satuan,
-            'tgl_tambah'  => $tgl,
-        ]);
-
-        if ($update) {
-            return $this->response->setJSON([
-                'status'  => 'success',
-                'message' => 'Data berhasil diperbarui'
-            ]);
-        } else {
-            return $this->response->setJSON([
-                'status'  => 'error',
-                'message' => 'Gagal update data'
-            ])->setStatusCode(500);
-        }
-    }
-
     public function save()
     {
         $id = $this->request->getPost('id');
@@ -157,9 +128,12 @@ class MasterAtk extends BaseController
         $data = [
             'kode_barang' => $this->request->getPost('kode_barang'),
             'nama_barang' => $this->request->getPost('nama_barang'),
+            'stok' => $this->request->getPost('stok'),
+            'pkm' => $this->request->getPost('pkm'),
             'harga'       => $this->request->getPost('harga'),
             'satuan'      => $this->request->getPost('satuan'),
-            'tgl_tambah'  => $this->request->getPost('tgl_tambah'),
+            // 'tgl_tambah'  => $this->request->getPost('tgl_tambah'),
+            'tgl_tambah'  => date('Y-m-d'),
         ];
 
         $builder = $this->db->table('master_atk');
@@ -219,6 +193,8 @@ class MasterAtk extends BaseController
 			$arr[] = (int)$key + 1;
             $arr[] = $val->kode_barang;
 			$arr[] = $val->nama_barang;
+			$arr[] = $val->stok;
+			$arr[] = $val->pkm;
 			$arr[] = $val->harga;
 			$arr[] = $val->satuan;
 			$arr[] = $val->tgl_tambah;

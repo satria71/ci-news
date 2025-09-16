@@ -51,3 +51,11 @@ $routes->get('masteratk/editdata/(:num)', 'MasterAtk::editdata/$1');
 // $routes->post('masteratk/save', 'Masteratk::save');
 $routes->match(['get','post'], 'masteratk/save', 'MasterAtk::save');
 
+$routes->get('atkmasuk', 'AtkMasuk::index');
+
+$routes->match(['get', 'post'],'atkmasuk/datatemp', 'AtkMasuk::datatemp');
+// $routes->match(['get', 'post'],'atkmasuk/datatemp', 'AtkMasuk::datatemp');
+// $routes->match(['get', 'post'],'atk/datatemp', 'AtkMasuk::datatemp');
+
+// $routes->setAutoRoute(true);
+// $routes->setTranslateUriToCamelCase(false);
