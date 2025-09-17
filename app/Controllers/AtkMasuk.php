@@ -9,21 +9,35 @@ class AtkMasuk extends BaseController
         return view('atk/forminputatkmasuk');
     }
 
-    public function tampildatatemp($sj){
+    public function tampildatatemp(string $sj): array{
         $db      = \Config\Database::connect();
-        $builder = $db->table('temp_atk_masuk'); 
-        $builder->select('temp_atk_masuk.det_sj, temp_atk_masuk.det_kode_barang, master_atk.harga, temp_atk_masuk.det_jumlah, temp_atk_masuk.det_subtotal, master_atk.kode_barang, master_atk.nama_barang')
-        ->join('master_atk', 'master_atk.kode_barang = temp_atk_masuk.det_kode_barang')   // join manual
-        ->where('temp_atk_masuk.det_sj',$sj);
+        $builder = $db->table('temp_atk_masuk t'); 
+        $builder->select(
+            't.id,
+             t.det_sj,
+             t.det_kode_barang,
+             m.nama_barang,
+             t.det_harga,
+             t.det_harga_masuk,
+             t.det_jumlah,
+             t.det_subtotal')
+        ->join('master_atk m', 'm.kode_barang = t.det_kode_barang')   // join manual
+        ->where('t.det_sj',$sj);
 
-        $query = $builder->get();
-        return $query->getResultArray();
+        // log_message('debug', 'DEBUG tampildatatemp => ' . print_r(
+        // $builder->getCompiledSelect(), true
+        // ));
+        // log_message('debug', 'DEBUG tampildatatemp data => ' . print_r(
+        //     $builder->get()->getResultArray(), true
+        // ));
+
+        return $builder->get()->getResultArray();
     }
 
     public function datatemp(){
 
         if($this->request->isAJAX()){
-            $sj = $this->request->getPost('sj');
+            $sj = (string) $this->request->getPost('sj');
 
             $data = [
                 'datatemp' => $this->tampildatatemp($sj)
@@ -33,6 +47,90 @@ class AtkMasuk extends BaseController
                 'data' => view('atk/datatemp',$data)
             ];
             echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function ambildatabarang(){
+        if($this->request->isAJAX()){
+            $kode_barang = $this->request->getPost('kode_barang');
+
+            $db      = \Config\Database::connect();
+            $builder = $db->table('master_atk'); 
+            $query = $builder->where('kode_barang', $kode_barang)->get();
+            $ambildata = $query->getRow();
+            
+            if($ambildata == NULL){
+                $json = [
+                    'error' => 'Data Barang Tidak Ditemukan...'
+                ];
+            }else{
+                $data = [
+                    'nama_barang' => $ambildata->nama_barang,
+                    'harga' => $ambildata->harga
+                ];
+
+                $json = [
+                    'sukses' => $data
+                ];
+            }
+
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function simpantemp(){
+        if($this->request->isAJAX()){
+            $db      = \Config\Database::connect();
+            $builder = $db->table('temp_atk_masuk'); 
+
+            $sj = $this->request->getPost('sj');
+            $kode_barang = $this->request->getPost('kode_barang');
+            $harga = $this->request->getPost('harga');
+            $harga_beli = $this->request->getPost('harga_beli');
+            $jumlah = $this->request->getPost('jumlah');
+
+            $data = [
+                'det_sj' => $sj,
+                'det_kode_barang' => $kode_barang,
+                'det_harga' => $harga,
+                'det_harga_masuk' => $harga_beli,
+                'det_jumlah' => $jumlah,
+                'det_subtotal' => intval($jumlah) * intval($harga_beli)
+            ];
+
+            $builder->insert($data);
+
+            // var_dump($this->request->getPost());
+
+            $json = [
+                'sukses' => 'Item berhasil ditambahkan'
+            ];
+
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function hapus(){
+        if($this->request->isAJAX()){
+            $db      = \Config\Database::connect();
+            $builder = $db->table('temp_atk_masuk');
+
+            $id = $this->request->getPost('id');
+            
+            $builder->where('id', $id);
+            $builder->delete();
+
+            $json = [
+                'sukses' => 'Item berhasil dihapus'
+            ];
+            echo json_encode($json);
+
         }else{
             exit('maaf data tidak dipanggil');
         }

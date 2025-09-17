@@ -54,6 +54,9 @@ $routes->match(['get','post'], 'masteratk/save', 'MasterAtk::save');
 $routes->get('atkmasuk', 'AtkMasuk::index');
 
 $routes->match(['get', 'post'],'atkmasuk/datatemp', 'AtkMasuk::datatemp');
+$routes->match(['get', 'post'],'atkmasuk/ambildatabarang', 'AtkMasuk::ambildatabarang');
+$routes->match(['get', 'post'],'atkmasuk/simpantemp', 'AtkMasuk::simpantemp');
+$routes->match(['get', 'post'],'atkmasuk/hapus', 'AtkMasuk::hapus');
 // $routes->match(['get', 'post'],'atkmasuk/datatemp', 'AtkMasuk::datatemp');
 // $routes->match(['get', 'post'],'atk/datatemp', 'AtkMasuk::datatemp');
 

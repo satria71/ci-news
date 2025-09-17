@@ -10,7 +10,7 @@
             <div class="section-header-back">
                 <a href="<?=site_url('AtkMasuk')?>" class="btn"><i class="fas fa-arrow-left"></i></a>
                 </div>
-            <h1>Input Data ATK Masuk</h1>
+            <h1>ATK Masuk</h1>
         </div>
 
 
@@ -23,7 +23,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>No SJ</label>
-                            <input type="text" class="form-control" name="sj" placeholder="No SJ" id="sj" required>
+                            <input type="text" class="form-control" name="sj" placeholder="No SJ" id="sj">
                         </div>
                         <div class="form-group col-md-6">
                             <label>Tanggal</label>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label>Nama Barang</label>
                             <input type="text" class="form-control" name="nama_barang" placeholder="Nama Barang" id="nama_barang" readonly>
                         </div>
@@ -58,6 +58,10 @@
                             <input type="number" class="form-control" name="harga" placeholder="Harga" id="harga" readonly>
                         </div>
                         <div class="form-group col-md-2">
+                            <label>Harga Beli</label>
+                            <input type="number" class="form-control" name="harga_beli" placeholder="Harga Beli" id="harga_beli">
+                        </div>
+                        <div class="form-group col-md-1">
                             <label>Jumlah</label>
                             <input type="number" class="form-control" name="jumlah" id="jumlah">
                         </div>
@@ -82,6 +86,7 @@
 <script>
     function datatemp(){
         let sj = $('#sj').val();
+        // console.log(sj);
 
         $.ajax({
             type: "post",
@@ -101,9 +106,102 @@
         });
     }
 
+    function kosong(){
+        // $('#sj').val('');
+        $('#kode_barang').val('');
+        $('#nama_barang').val('');
+        $('#harga').val('');
+        $('#harga_beli').val('');
+        $('#jumlah').val('');
+        $('#kode_barang').focus();
+    }
+
     $(document).ready(function () {
         datatemp();
+
+        $('#kode_barang').keydown(function (e) { 
+            if(e.keyCode == 13){
+                e.preventDefault();
+                let kode_barang = $('#kode_barang').val();
+
+                $.ajax({
+                    type: "post",
+                    url: "/atkmasuk/ambildatabarang",
+                    data: {
+                        kode_barang : kode_barang       
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if(response.sukses){
+                            let data = response.sukses;
+                            $('#nama_barang').val(data.nama_barang);
+                            $('#harga').val(data.harga);
+                            $('#harga_beli').focus();
+                        }
+
+                        if(response.error){
+                            alert (response.error);
+                            kosong();
+                        }
+                    },
+                    error: function(xhr,ajaxOptions,thrownError){
+                        alert(xhr.status+'\n'+thrownError);
+                    }
+                });
+            }
+        });
+
+        $('#tomboltambahitem').click(function (e) { 
+            e.preventDefault();
+            // alert('ini tombol tambah item');
+            let sj = $('#sj').val();
+            let kode_barang = $('#kode_barang').val();
+            let harga = $('#harga').val();
+            let harga_beli = $('#harga_beli').val();
+            let jumlah = $('#jumlah').val();
+            
+            if(sj.length == 0 || kode_barang == 0 || harga_beli == 0 || jumlah == 0){
+                swal({
+                        icon: "error",
+                        title: "Error",
+                        text: 'Maaf sj/kode barang/harga beli/jumlah tidak boleh kosong',
+                        button: {
+                            text: "OK",
+                            className: "btn btn-primary waves-effect"
+                        }
+                    });
+            }else{
+                $.ajax({
+                    type: "post",
+                    url: "/atkmasuk/simpantemp",
+                    data: {
+                        sj : sj,
+                        kode_barang : kode_barang,
+                        harga : harga,
+                        harga_beli : harga_beli,
+                        jumlah : jumlah
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if(response.sukses){
+                            alert(response.sukses);
+                            datatemp();
+                            kosong();
+                        }
+                    },
+                    error: function(xhr,ajaxOptions,thrownError){
+                        alert(xhr.status+'\n'+thrownError);
+                    }
+                });
+            }
+        });
+
+        $('#tombolreload').click(function (e) { 
+            e.preventDefault();
+            datatemp();
+        });
     });
+    // datatemp();
 </script>
 
 <?= $this->endSection()?>
