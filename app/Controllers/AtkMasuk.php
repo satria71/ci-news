@@ -135,4 +135,106 @@ class AtkMasuk extends BaseController
             exit('maaf data tidak dipanggil');
         }
     }
+
+    public function caridatabarang(){
+        if($this->request->isAJAX()){
+            $json = [
+                'data' => view('atk/modalcaribarang')
+            ];
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }  
+    }
+
+    public function modaldetailcaribarang(){
+        if($this->request->isAJAX()){
+        $db      = \Config\Database::connect();
+        $builder = $db->table('master_atk');
+
+        $cari = $this->request->getPost('cari');
+        
+        $builder->groupStart() // buka grup WHERE
+            ->like('kode_barang', $cari)
+            ->orLike('nama_barang', $cari)
+            ->groupEnd();
+        
+        $query = $builder->get();
+        $data = $query->getResultArray();
+        
+        if($data != NULL){
+            $json = [
+                'data' => view('atk/modaldetaildatabarang',[
+                    'tampildata' => $data
+                ])
+            ];
+
+            echo json_encode($json);
+        }
+
+        }else{
+            exit('maaf data tidak dipanggil');
+        } 
+    }
+
+    public function selesaitransaksi(){
+        if($this->request->isAJAX()){
+            $db      = \Config\Database::connect();
+            $buildertemp = $db->table('temp_atk_masuk');
+
+            $sj = $this->request->getPost('sj');
+            $tgl = $this->request->getPost('tgl');
+
+            $query = $buildertemp->where('det_sj', $sj)->get();
+            $datatemp = $query->getResultArray();
+
+            if($datatemp == 0){
+                $json = [
+                    'error' => 'Maaf, data item untuk SJ ini belum ada'
+                ];
+            }else{
+                // simpan ke table atk masuk
+                $db      = \Config\Database::connect();
+                $builder = $db->table('atk_masuk');
+                $builder2 = $db->table('detail_atk_masuk');
+                
+                $totalsubtotal = 0;
+                foreach($datatemp as $total) :
+                    $totalsubtotal += intval($total['det_subtotal']);
+                endforeach;
+                
+                $data = [
+                    'no_sj' => $sj,
+                    'tgl' => $tgl,
+                    'total_harga' => $totalsubtotal
+                ];
+
+                $builder->insert($data);
+
+                //simpan ke table detail atk masuk
+                foreach ($datatemp as $row) :
+                    $data2 = [
+                        'det_sj' => $row['det_sj'],
+                        'det_kode_barang' => $row['det_kode_barang'],
+                        'det_harga_masuk' => $row['det_harga_masuk'],
+                        'det_jumlah' => $row['det_jumlah'],
+                        'det_subtotal' => $row['det_subtotal'],
+                    ];
+
+                    $builder2->insert($data2);
+                endforeach;
+
+                //hapus data di table temp
+                $buildertemp->emptyTable();
+
+                $json = [
+                    'sukses' => 'Transaksi berhasil disimpan'
+                ];
+            }
+
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        } 
+    }
 }

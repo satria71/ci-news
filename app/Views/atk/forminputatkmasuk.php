@@ -77,11 +77,17 @@
                             </div>
                         </div>
                     </div>  
+                    <div class="row justify-content-end">
+                        <button type="button" class="btn btn-sm btn-success" id="tombolselesaitransaksi">
+                            <i class="fas fa-save"> Selesai Input</i>
+                        </button>
+                    </div>
                     <div class="row" id="tampildatatemp"></div>
                 </div>
             </div>
         </div>
     </section>
+<div class="modalcaribarang" style="display: none;"></div>
 
 <script>
     function datatemp(){
@@ -116,38 +122,42 @@
         $('#kode_barang').focus();
     }
 
+    function ambildatabarang(){
+        let kode_barang = $('#kode_barang').val();
+
+        $.ajax({
+            type: "post",
+            url: "/atkmasuk/ambildatabarang",
+            data: {
+                kode_barang : kode_barang       
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.sukses){
+                    let data = response.sukses;
+                    $('#nama_barang').val(data.nama_barang);
+                    $('#harga').val(data.harga);
+                    $('#harga_beli').focus();
+                }
+
+                if(response.error){
+                    alert (response.error);
+                    kosong();
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    }
+
     $(document).ready(function () {
         datatemp();
 
         $('#kode_barang').keydown(function (e) { 
             if(e.keyCode == 13){
                 e.preventDefault();
-                let kode_barang = $('#kode_barang').val();
-
-                $.ajax({
-                    type: "post",
-                    url: "/atkmasuk/ambildatabarang",
-                    data: {
-                        kode_barang : kode_barang       
-                    },
-                    dataType: "json",
-                    success: function (response) {
-                        if(response.sukses){
-                            let data = response.sukses;
-                            $('#nama_barang').val(data.nama_barang);
-                            $('#harga').val(data.harga);
-                            $('#harga_beli').focus();
-                        }
-
-                        if(response.error){
-                            alert (response.error);
-                            kosong();
-                        }
-                    },
-                    error: function(xhr,ajaxOptions,thrownError){
-                        alert(xhr.status+'\n'+thrownError);
-                    }
-                });
+                ambildatabarang();
             }
         });
 
@@ -162,14 +172,14 @@
             
             if(sj.length == 0 || kode_barang == 0 || harga_beli == 0 || jumlah == 0){
                 swal({
-                        icon: "error",
-                        title: "Error",
-                        text: 'Maaf sj/kode barang/harga beli/jumlah tidak boleh kosong',
-                        button: {
-                            text: "OK",
-                            className: "btn btn-primary waves-effect"
-                        }
-                    });
+                    icon: "error",
+                    title: "Error",
+                    text: 'Maaf sj/kode barang/harga beli/jumlah tidak boleh kosong',
+                    button: {
+                        text: "OK",
+                        className: "btn btn-primary waves-effect"
+                    }
+                });
             }else{
                 $.ajax({
                     type: "post",
@@ -200,8 +210,109 @@
             e.preventDefault();
             datatemp();
         });
+
+        $('#tombolcaribarang').click(function (e) { 
+            e.preventDefault();
+            $.ajax({
+                url: "/atkmasuk/caridatabarang",
+                dataType: "json",
+                success: function (response) {
+                    if(response.data){
+                        $('.modalcaribarang').html(response.data).show();
+                        $('#modalcaribarang').modal('show');
+                    }
+                },
+                error: function(xhr,ajaxOptions,thrownError){
+                    alert(xhr.status+'\n'+thrownError);
+                }
+            });
+        });
     });
-    // datatemp();
+
+    $('#tombolselesaitransaksi').click(function (e) { 
+        e.preventDefault();
+        let sj = $('#sj').val();
+        
+        if(sj.length == 0){
+            swal({
+                icon: "warning",
+                title: "Pesan",
+                text: 'Maaf No SJ Tidak Boleh Kosong',
+                button: {
+                    text: "OK",
+                    className: "btn btn-primary waves-effect"
+                }
+            });
+        }else{
+            swal({
+                title: "Selesai Transaksi Input ?",
+                text: "Yakin transaksi ini akan disimpan ?",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: null,
+                        visible: true,
+                        className: "btn btn-outline-secondary waves-effect",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Ya, simpan",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-primary me-3 waves-effect waves-light",
+                        closeModal: true,
+                    }
+                },
+                dangerMode: true,
+                className: "my-custom-swal"
+            }).then(function(isConfirmed){
+                if(isConfirmed){
+                    $.ajax({
+                        type: "post",
+                        url: "/atkmasuk/selesaitransaksi",
+                        data: {
+                            sj : sj,
+                            tgl : $('#tgl').val()
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            if(response.error){
+                                swal({
+                                    icon: "error",
+                                    title: "Error !",
+                                    text: response.error,
+                                    button: {
+                                        text: "OK",
+                                        className: "btn btn-success waves-effect"
+                                    }
+                                });
+                            }
+
+                            if(response.sukses){
+                                swal({
+                                    icon: "success",
+                                    title: "Sukses !",
+                                    text: response.sukses,
+                                    button: {
+                                        text: "OK",
+                                        className: "btn btn-success waves-effect"
+                                    }
+                                }).then(function(isConfirmed){
+                                    if(isConfirmed){
+                                        window.location.reload();
+                                    }
+                                }); 
+                            }
+                        },
+                        error: function(xhr,ajaxOptions,thrownError){
+                            alert(xhr.status+'\n'+thrownError);
+                        }
+                    });
+                }
+            });
+        }
+    });
 </script>
 
 <?= $this->endSection()?>
