@@ -8,7 +8,7 @@
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="<?=site_url('AtkMasuk')?>" class="btn"><i class="fas fa-arrow-left"></i></a>
+                <a href="<?=site_url('atkmasuk/data')?>" class="btn"><i class="fas fa-arrow-left"></i></a>
                 </div>
             <h1>ATK Masuk</h1>
         </div>

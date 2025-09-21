@@ -44,7 +44,7 @@
 
                 </div>
                 
-                <div class="card-body table-responsive">
+                <div class="card-body table-responsive table-bordered"> 
                     <table class="table table-striped table-sm" id="tbMain">
                         <thead>
                             <tr>

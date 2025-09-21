@@ -8,7 +8,7 @@
 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-book"></i> <span>ATK</span></a>
     <ul class="dropdown-menu">
         <li><a class="nav-link" href="<?= site_url('masteratk')?>">Master ATK</a></li>
-        <li><a class="nav-link" href="<?= site_url('atkmasuk')?>">ATK Masuk</a></li>
+        <li><a class="nav-link" href="<?= site_url('atkmasuk/data')?>">ATK Masuk</a></li>
         <li><a class="nav-link" href="">ATK Keluar</a></li>
         <li><a class="nav-link" href="">Kartu Stok ATK</a></li>
     </ul>
