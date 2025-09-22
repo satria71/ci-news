@@ -72,8 +72,13 @@
                                 <div class="input-group">
                                     <button type="button" class="btn btn-sm btn-icon btn-info waves-effect" title="Tambah Item" id="tomboltambahitem">
                                         <i class="fas fa-plus-square"> </i>
-                                    </button>&ensp;
-                                    <button type="button" class="btn btn-sm btn-icon btn-warning waves-effect" title="Reload Data" id="tombolreload">
+                                    </button>
+
+                                    <button style="display: none;" type="button" class="btn btn-sm btn-icon btn-primary waves-effect" title="Edit Data" id="tomboledititem">
+                                        <i class="fas fa-edit"></i>
+                                    </button> &nbsp;
+
+                                    <button style="display: none;" type="button" class="btn btn-sm btn-icon btn-secondary waves-effect" title="Reload Data" id="tombolreload">
                                         <i class="fas fa-sync-alt"></i>
                                     </button>
                                 </div>
@@ -87,6 +92,7 @@
             </div>
         </div>
     </section>
+    <div class="modalcaribarang" style="display: none;"></div>
 
 <script>
 function datadetail(){
@@ -112,8 +118,152 @@ function datadetail(){
     });
 }
 
+function kosong(){
+    // $('#sj').val('');
+    $('#kode_barang').val('');
+    $('#nama_barang').val('');
+    $('#harga').val('');
+    $('#harga_beli').val('');
+    $('#jumlah').val('');
+    $('#kode_barang').focus();
+}
+
+function ambildatabarang(){
+    let kode_barang = $('#kode_barang').val();
+
+    $.ajax({
+        type: "post",
+        url: "/atkmasuk/ambildatabarang",
+        data: {
+            kode_barang : kode_barang       
+        },
+        dataType: "json",
+        success: function (response) {
+            if(response.sukses){
+                let data = response.sukses;
+                $('#nama_barang').val(data.nama_barang);
+                $('#harga').val(data.harga);
+                $('#harga_beli').focus();
+            }
+
+            if(response.error){
+                alert (response.error);
+                kosong();
+            }
+        },
+        error: function(xhr,ajaxOptions,thrownError){
+            alert(xhr.status+'\n'+thrownError);
+        }
+    });
+}
+
 $(document).ready(function () {
     datadetail();
+
+    $('#tombolreload').click(function (e) { 
+        e.preventDefault();
+        $('#iddetailsj').val('');
+        $(this).hide();
+        $('#tomboledititem').hide();
+        $('#tomboltambahitem').fadeIn();
+        
+        kosong();
+    });
+
+    $('#tomboltambahitem').click(function (e) { 
+        e.preventDefault();
+        // alert('ini tombol tambah item');
+        let sj = $('#sj').val();
+        let kode_barang = $('#kode_barang').val();
+        let harga = $('#harga').val();
+        let harga_beli = $('#harga_beli').val();
+        let jumlah = $('#jumlah').val();
+        
+        if(sj.length == 0 || kode_barang == 0 || harga_beli == 0 || jumlah == 0){
+            swal({
+                icon: "error",
+                title: "Error",
+                text: 'Maaf sj/kode barang/harga beli/jumlah tidak boleh kosong',
+                button: {
+                    text: "OK",
+                    className: "btn btn-primary waves-effect"
+                }
+            });
+        }else{
+            $.ajax({
+                type: "post",
+                url: "/atkmasuk/simpandetailsj",
+                data: {
+                    sj : sj,
+                    kode_barang : kode_barang,
+                    harga : harga,
+                    harga_beli : harga_beli,
+                    jumlah : jumlah
+                },
+                dataType: "json",
+                success: function (response) {
+                    if(response.sukses){
+                        alert(response.sukses);
+                        datadetail();
+                        kosong();
+                    }
+                },
+                error: function(xhr,ajaxOptions,thrownError){
+                    alert(xhr.status+'\n'+thrownError);
+                }
+            });
+        }
+    });
+
+    $('#tomboledititem').click(function (e) { 
+        e.preventDefault();
+        let sj = $('#sj').val();
+        let kode_barang = $('#kode_barang').val();
+        let harga = $('#harga').val();
+        let harga_beli = $('#harga_beli').val();
+        let jumlah = $('#jumlah').val();
+
+        $.ajax({
+            type: "post",
+            url: "/atkmasuk/updateitemsj",
+            data: {
+                iddetailsj : $('#iddetailsj').val(),
+                sj : sj,
+                kode_barang : kode_barang,
+                harga : harga,
+                harga_beli : harga_beli,
+                jumlah : jumlah
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.sukses){
+                    alert(response.sukses);
+                    datadetail();
+                    kosong();
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    });
+
+    $('#tombolcaribarang').click(function (e) { 
+        e.preventDefault();
+        $.ajax({
+            url: "/atkmasuk/caridatabarang",
+            dataType: "json",
+            success: function (response) {
+                if(response.data){
+                    $('.modalcaribarang').html(response.data).show();
+                    $('#modalcaribarang').modal('show');
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    });
 });
 
 </script>

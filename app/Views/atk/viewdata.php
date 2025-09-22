@@ -54,6 +54,9 @@
     <div class="viewmodal" style="display: none;"></div>
 
 <script>
+
+// let dtIn;
+
 function detailitem(no_sj){
     $.ajax({
         type: "post",
@@ -78,6 +81,8 @@ function edittransaksi(no_sj){
     window.location.href = ('/atkmasuk/edittransaksi/') + no_sj;
 }
 
+
+
 $(document).ready(function () {
     let dtIn = $("#tbtransaksiatk").DataTable({
         ajax: {
@@ -96,8 +101,89 @@ $(document).ready(function () {
         }
     });
 
+    $('#tbtransaksiatk').on('click', '#delete', function () {
+        const detail = $(this).data('detail');
+        // console.log(detail.id);
 
+        swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "Cancel",
+                    value: null,
+                    visible: true,
+                    className: "btn btn-outline-secondary waves-effect",
+                    closeModal: true,
+                },
+                confirm: {
+                    text: "Yes, delete it!",
+                    value: true,
+                    visible: true,
+                    className: "btn btn-primary me-3 waves-effect waves-light",
+                    closeModal: true,
+                }
+            },
+            dangerMode: true,
+            className: "my-custom-swal"
+        }).then(function (willDelete) {
+            if (willDelete) {
+                $.ajax({
+                    url: '/atkmasuk/hapustransaksi',
+                    type: 'POST',
+                    data: {
+                        id: detail.no_sj
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status === 'success') {
+                            swal({
+                                icon: "success",
+                                title: "Berhasil dihapus!",
+                                text: res.message,
+                                button: {
+                                    text: "OK",
+                                    className: "btn btn-success waves-effect"
+                                }
+                            }).then(function (willDelete) {
+                                if(willDelete){
+                                    window.location.reload();
+                                }
+                            });
+                            
+                        } else {
+                            swal({
+                                icon: "error",
+                                title: "Gagal",
+                                text: res.message || 'Terjadi kesalahan saat menghapus.',
+                                button: {
+                                    text: "OK",
+                                    className: "btn btn-danger waves-effect"
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        swal({
+                            icon: "error",
+                            title: "Error",
+                            text: "Terjadi kesalahan pada server.",
+                            button: {
+                                text: "OK",
+                                className: "btn btn-danger waves-effect"
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
 });
+
+// function reload_dt() {
+//     dtIn.ajax.reload(null, false);
+// }
 </script>
 
 

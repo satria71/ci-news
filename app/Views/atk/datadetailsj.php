@@ -47,84 +47,91 @@
 </table>
 
 <script>
-    function edititem(id){
-        $('#iddetailsj').val(id);
+function edititem(id){
+    $('#iddetailsj').val(id);
 
-        $.ajax({
-            type: "post",
-            url: "/atkmasuk/edititem",
-            data: {
-                iddetailsj : $('#iddetailsj').val()
-            },
-            dataType: "json",
-            success: function (response) {
-                if(response.sukses){
-                    let data = response.sukses;
-                    $('#kode_barang').val(data.kode_barang);
-                    $('#nama_barang').val(data.nama_barang);
-                    $('#harga').val(data.harga);
-                    $('#harga_beli').val(data.harga_beli);
-                    $('#jumlah').val(data.jumlah);
-                }
-            },
-            error: function(xhr,ajaxOptions,thrownError){
-                alert(xhr.status+'\n'+thrownError);
+    $.ajax({
+        type: "post",
+        url: "/atkmasuk/edititem",
+        data: {
+            iddetailsj : $('#iddetailsj').val()
+        },
+        dataType: "json",
+        success: function (response) {
+            if(response.sukses){
+                let data = response.sukses;
+                $('#kode_barang').val(data.kode_barang);
+                $('#nama_barang').val(data.nama_barang);
+                $('#harga').val(data.harga);
+                $('#harga_beli').val(data.harga_beli);
+                $('#jumlah').val(data.jumlah);
+
+                $('#tomboledititem').fadeIn();
+                $('#tombolreload').fadeIn();
+                $('#tomboltambahitem').fadeOut();
             }
-        });
-    }
+        },
+        error: function(xhr,ajaxOptions,thrownError){
+            alert(xhr.status+'\n'+thrownError);
+        }
+    });
+}
 
-    function hapusitem(id){
+function hapusitem(id){
     swal({
-            title: "Hapus Item",
-            text: "Yakin menghapus item ini ?",
-            icon: "warning",
-            buttons: {
-                cancel: {
-                    text: "Cancel",
-                    value: null,
-                    visible: true,
-                    className: "btn btn-outline-secondary waves-effect",
-                    closeModal: true,
-                },
-                confirm: {
-                    text: "Ya, hapus!",
-                    value: true,
-                    visible: true,
-                    className: "btn btn-primary me-3 waves-effect waves-light",
-                    closeModal: true,
-                }
+        title: "Hapus Item",
+        text: "Yakin menghapus item ini ?",
+        icon: "warning",
+        buttons: {
+            cancel: {
+                text: "Cancel",
+                value: null,
+                visible: true,
+                className: "btn btn-outline-secondary waves-effect",
+                closeModal: true,
             },
-            dangerMode: true,
-            className: "my-custom-swal"
-        }).then(function(isConfirmed){
-            if(isConfirmed){
-                $.ajax({
-                    type: "post",
-                    url: "/atkmasuk/hapus",
-                    data: {
-                        id : id
-                    },
-                    dataType: "json",
-                    success: function (response) {
-                        if(response.sukses){
-                            datatemp();
-
-                            swal({
-                                icon: "success",
-                                title: "Berhasil!",
-                                text: response.sukses,
-                                button: {
-                                    text: "OK",
-                                    className: "btn btn-success waves-effect"
-                                }
-                            });
-                        }
-                    },
-                    error: function(xhr,ajaxOptions,thrownError){
-                        alert(xhr.status+'\n'+thrownError);
-                    }
-                });
+            confirm: {
+                text: "Ya, hapus!",
+                value: true,
+                visible: true,
+                className: "btn btn-primary me-3 waves-effect waves-light",
+                closeModal: true,
             }
-        });  
-    }
+        },
+        dangerMode: true,
+        className: "my-custom-swal"
+    }).then(function(isConfirmed){
+        if(isConfirmed){
+            $.ajax({
+                type: "post",
+                url: "/atkmasuk/hapusitemdetail",
+                data: {
+                    id : id,
+                    sj : $('#sj').val()
+                },
+                dataType: "json",
+                success: function (response) {
+                    if(response.sukses){
+                        datadetail();
+
+                        swal({
+                            icon: "success",
+                            title: "Berhasil!",
+                            text: response.sukses,
+                            button: {
+                                text: "OK",
+                                className: "btn btn-success waves-effect"
+                            }
+                        });
+                    }
+                },
+                error: function(xhr,ajaxOptions,thrownError){
+                    alert(xhr.status+'\n'+thrownError);
+                }
+            });
+        }
+    });  
+}
+
+
 </script>
