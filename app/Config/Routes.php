@@ -44,11 +44,9 @@ $routes->post('voucher/simpandata', 'voucher::simpandata');
 $routes->get('voucher/formedit/(:any)', 'voucher::formedit/$1');
 $routes->put('voucher/(:any)', 'voucher::update/$1');
 
-// $routes->post('masteratk/dt_masteratk', 'MasterAtk::dt_masteratk');
 $routes->match(['get', 'post'], 'masteratk/dt_masteratk', 'MasterAtk::dt_masteratk');
 $routes->post('masteratk/proseseditdata', 'MasterAtk::proseseditdata');
 $routes->get('masteratk/editdata/(:num)', 'MasterAtk::editdata/$1');
-// $routes->post('masteratk/save', 'Masteratk::save');
 $routes->match(['get','post'], 'masteratk/save', 'MasterAtk::save');
 
 $routes->get('atkmasuk', 'AtkMasuk::index');
@@ -71,8 +69,8 @@ $routes->match(['get','post'], 'atkmasuk/simpandetailsj', 'AtkMasuk::simpandetai
 $routes->match(['get','post'], 'atkmasuk/updateitemsj', 'AtkMasuk::updateitemsj');
 $routes->match(['get','post'], 'atkmasuk/hapusitemdetail', 'AtkMasuk::hapusitemdetail');
 $routes->match(['get','post'], 'atkmasuk/hapustransaksi', 'AtkMasuk::hapustransaksi');
-// $routes->match(['get', 'post'],'atkmasuk/datatemp', 'AtkMasuk::datatemp');
-// $routes->match(['get', 'post'],'atk/datatemp', 'AtkMasuk::datatemp');
 
-// $routes->setAutoRoute(true);
-// $routes->setTranslateUriToCamelCase(false);
+//ATK KELUAR
+$routes->match(['get','post'], 'atkkeluar/data', 'AtkKeluar::data');
+$routes->match(['get', 'post'],'atkkeluar/index', 'AtkKeluar::index');
+$routes->match(['get', 'post'],'atkkeluar/input', 'AtkKeluar::input');
