@@ -170,6 +170,13 @@ $(document).ready(function () {
         kosong();
     });
 
+    $('#kode_barang').keydown(function (e) { 
+            if(e.keyCode == 13){
+                e.preventDefault();
+                ambildatabarang();
+            }
+        });
+
     $('#tomboltambahitem').click(function (e) { 
         e.preventDefault();
         // alert('ini tombol tambah item');
@@ -204,6 +211,11 @@ $(document).ready(function () {
                 success: function (response) {
                     if(response.sukses){
                         alert(response.sukses);
+                        datadetail();
+                        kosong();
+                    }
+                    if(response.error){
+                        alert(response.error);
                         datadetail();
                         kosong();
                     }

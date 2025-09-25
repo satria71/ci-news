@@ -504,6 +504,19 @@ class AtkMasuk extends BaseController
             $harga_beli = $this->request->getPost('harga_beli');
             $jumlah = $this->request->getPost('jumlah');
 
+            $cekBarang = $db->table('master_atk')
+                        ->where('kode_barang', $kode_barang)
+                        ->countAllResults();
+
+            if ($cekBarang === 0) {
+                // Jika tidak ada kirim notif dan hentikan proses
+                echo json_encode([
+                    'error' => 'Kode barang tidak ditemukan!'
+                ]);
+                return; // hentikan eksekusi
+            }
+            
+
             $data = [
                 'det_sj' => $sj,
                 'det_kode_barang' => $kode_barang,

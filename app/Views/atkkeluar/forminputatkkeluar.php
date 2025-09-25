@@ -14,15 +14,15 @@
         </div>
 
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label>No SJ</label>
-                <input type="text" class="form-control" name="sj" placeholder="No SJ" id="sj" readonly>
+                <input type="text" class="form-control" name="sj" value="<?= $no_sj ?>" placeholder="No SJ" id="no_sj" readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label>Tanggal</label>
                 <input type="date" class="form-control" value="<?= date('Y-m-d') ?>" name="tgl" placeholder="Tanggal" id="tgl" required>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label>Cari Karyawan</label>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Nama Karyawan" name="nama_karyawan" id="nama_karyawan" readonly>
@@ -36,6 +36,10 @@
                         </button>
                     </div>
                 </div>
+            </div>
+            <div class="form-group col-md-3">
+                <label>Bagian</label>
+                <input type="text" class="form-control" name="bagian" placeholder="Bagian" id="bagian" readonly>
             </div>
         </div>  
 
@@ -85,4 +89,52 @@
             </div>
         </div>        
     </section>
+<div class="viewmodal" sytel="display: none;"></div>
+
+<script>
+function buatnosjdariinputan(){
+    let tanggal = $('#tgl').val();
+
+    $.ajax({
+        type: "post",
+        url: "/atkkeluar/buatnosjinputan",
+        data: {
+            tanggal : tanggal
+        },
+        dataType: "json",
+        success: function (response) {
+            $('#no_sj').val(response.nosj);
+        },
+        error: function(xhr,ajaxOptions,thrownError){
+            alert(xhr.status+'\n'+thrownError);
+        }
+    });
+}
+
+$(document).ready(function () {
+    $('#tgl').change(function (e) { 
+        buatnosjdariinputan();
+        
+    });
+
+    $('#tomboltambahkaryawan').click(function (e) { 
+        e.preventDefault();
+        $.ajax({
+            type: "post",
+            url: "/karyawan/formtambah",
+            dataType: "json",
+            success: function (response) {
+                if(response.data){
+                    $('.viewmodal').html(response.data).show();
+                    $('#modaltambahkaryawan').modal('show');
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+        
+    });
+});
+</script>
 <?= $this->endSection()?>
