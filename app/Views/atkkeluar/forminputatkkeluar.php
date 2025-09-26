@@ -18,15 +18,19 @@
                 <label>No SJ</label>
                 <input type="text" class="form-control" name="sj" value="<?= $no_sj ?>" placeholder="No SJ" id="no_sj" readonly>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>Tanggal</label>
                 <input type="date" class="form-control" value="<?= date('Y-m-d') ?>" name="tgl" placeholder="Tanggal" id="tgl" required>
+            </div>
+            <div class="form-group col-md-2">
+                <label>NIK</label>
+                <input type="text" class="form-control" name="NIK" placeholder="NIK" id="nik" readonly>
             </div>
             <div class="form-group col-md-3">
                 <label>Cari Karyawan</label>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Nama Karyawan" name="nama_karyawan" id="nama_karyawan" readonly>
-                    <input type="hidden" name="nik" id="nik">
+                    <input type="hidden" name="id" id="id">
                     <div class="input-group-append">
                         <button class="btn btn-outline-primary" type="button" id="tombolcarikaryawan" title="cari karyawan">
                             <i class="fas fa-search"></i>
@@ -37,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label>Bagian</label>
                 <input type="text" class="form-control" name="bagian" placeholder="Bagian" id="bagian" readonly>
             </div>
@@ -134,6 +138,24 @@ $(document).ready(function () {
             }
         });
         
+    });
+
+    $('#tombolcarikaryawan').click(function (e) { 
+        e.preventDefault();
+        $.ajax({
+            type: "post",
+            url: "/karyawan/modaldatakaryawan",
+            dataType: "json",
+            success: function (response) {
+                if(response.data){
+                    $('.viewmodal').html(response.data).show();
+                    $('#modaldatakaryawan').modal('show');
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
     });
 });
 </script>

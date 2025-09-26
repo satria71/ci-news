@@ -17,12 +17,13 @@
             </div>
             <div class="form-group mb-2">
                 <label>Nama Karyawan</label>
-                <input type="text" name="nama_karyawan" class="form-control" id="nama_karyawan">
+                <input type="text" name="nama_karyawanmod" class="form-control" id="nama_karyawanmod">
                 <div class="invalid-feedback errornamakaryawan">
             </div>
             <div class="form-group mb-2">
                 <label>Bagian</label>
-                <input type="text" name="bagian" class="form-control" id="bagian">
+                <input type="text" name="bagianmod" class="form-control" id="bagianmod">
+                <div class="invalid-feedback errorbagian">
             </div>
       </div>
       <div class="modal-footer">
@@ -58,6 +59,50 @@
                             $('#nikmod').addClass('is-invalid');
                             $('.errornik').html(err.errnik);
                         }
+                        if(err.errnama){
+                            $('#nama_karyawanmod').addClass('is-invalid');
+                            $('.errornamakaryawan').html(err.errnama);
+                        }
+                        if(err.errbagian){
+                            $('#bagianmod').addClass('is-invalid');
+                            $('.errorbagian').html(err.errbagian);
+                        }
+                    }
+
+                    if(response.sukses){
+                      swal({
+                        title: "Berhasil",
+                        text: response.sukses,
+                        icon: "success",
+                        buttons: {
+                            cancel: {
+                                text: "Cancel",
+                                value: null,
+                                visible: true,
+                                className: "btn btn-outline-secondary waves-effect",
+                                closeModal: true,
+                            },
+                            confirm: {
+                                text: "Ya, ambil",
+                                value: true,
+                                visible: true,
+                                className: "btn btn-primary me-3 waves-effect waves-light",
+                                closeModal: true,
+                            }
+                        },
+                        dangerMode: true,
+                        className: "my-custom-swal"
+                    }).then(function (ambil) {
+                        if (ambil) {
+                          $('#nama_karyawan').val(response.nama_karyawan);
+                          $('#nik').val(response.nik);
+                          $('#id').val(response.id);
+                          $('#bagian').val(response.bagian);
+                          $('#modaltambahkaryawan').modal('hide');
+                        }else{
+                          $('#modaltambahkaryawan').modal('hide');
+                        }
+                      });
                     }
                 }
             });
