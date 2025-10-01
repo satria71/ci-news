@@ -81,3 +81,4 @@ $routes->match(['get', 'post'],'karyawan/formtambah', 'Karyawan::formtambah');
 $routes->match(['get', 'post'],'karyawan/simpan', 'Karyawan::simpan');
 $routes->match(['get', 'post'],'karyawan/modaldatakaryawan', 'Karyawan::modaldatakaryawan');
 $routes->match(['get', 'post'],'karyawan/listdata', 'Karyawan::listdata');
+$routes->match(['get', 'post'],'karyawan/hapus', 'Karyawan::hapus');

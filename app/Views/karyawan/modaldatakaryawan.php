@@ -38,6 +38,7 @@
 <script>
 function listdatakaryawan(){
     var table = $('#datakaryawan').DataTable({
+        destroy : true,
         "processing" : true,
         "serverSide" : true,
         "order" : [],
@@ -58,6 +59,68 @@ function pilih(id,nik,nama,bagian){
     $('#bagian').val(bagian);
 
     $('#modaldatakaryawan').modal('hide');
+}
+
+function hapus(id, nik, nama, bagian){
+  swal({
+      title: "Hapus Karyawan ?",
+      text: "Yakin menghapus data karyawa dengan nama "+nama+"?",
+      icon: "warning",
+      buttons: {
+          cancel: {
+              text: "Cancel",
+              value: null,
+              visible: true,
+              className: "btn btn-outline-secondary waves-effect",
+              closeModal: true,
+          },
+          confirm: {
+              text: "Ya Hapus",
+              value: true,
+              visible: true,
+              className: "btn btn-primary me-3 waves-effect waves-light",
+              closeModal: true,
+          }
+      },
+      dangerMode: true,
+      className: "my-custom-swal"
+  }).then(function (willDelete) {
+      if (willDelete) {
+          $.ajax({
+              url: '/karyawan/hapus',
+              type: 'POST',
+              data: {
+                  id: id
+              },
+              dataType: 'json',
+              success: function (res) {
+                if(res.sukses){
+                  swal({
+                      icon: "success",
+                      title: "Berhasil",
+                      text: res.sukses,
+                      button: {
+                          text: "OK",
+                          className: "btn btn-primary waves-effect"
+                      }
+                  });
+                  listdatakaryawan();
+                }
+              },
+              error: function () {
+                  swal({
+                      icon: "error",
+                      title: "Error",
+                      text: "Terjadi kesalahan pada server.",
+                      button: {
+                          text: "OK",
+                          className: "btn btn-danger waves-effect"
+                      }
+                  });
+              }
+          });
+      }
+  });
 }
 
 $(document).ready(function () {

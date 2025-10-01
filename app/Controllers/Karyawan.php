@@ -177,11 +177,13 @@ class Karyawan extends BaseController
             $row   = [];
             $tombolpilih = "<button type=\"button\" class=\"btn btn-sm btn-info\" onclick=\"pilih('".$list->id."',
             '".$list->nik."','".$list->nama_karyawan."','".$list->bagian."')\"><i class=\"fas fa-hand-pointer\"></i></button>";
+            $tombolhapus = "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"hapus('".$list->id."',
+            '".$list->nik."','".$list->nama_karyawan."','".$list->bagian."')\"><i class=\"fas fa-trash-alt\"></i></button>";
             $row[] = $no;             // contoh nomor urut
             $row[] = $list->nik;             // contoh nomor urut
             $row[] = $list->nama_karyawan;     // contoh kolom
             $row[] = $list->bagian;
-            $row[] = $tombolpilih;
+            $row[] = $tombolpilih . " " . $tombolhapus;
             // tambahkan kolom lain sesuai kebutuhan
             $data[] = $row;
         }
@@ -194,5 +196,25 @@ class Karyawan extends BaseController
         ];
 
         return $this->response->setJSON($output);
+    }
+
+    function hapus(){
+        if($this->request->isAJAX()){
+            $db      = \Config\Database::connect();
+            $builder = $db->table('karyawan');
+
+            $id = $this->request->getPost('id');
+            
+            $builder->where('id', $id);
+            $builder->delete();
+
+            $json = [
+                'sukses' => 'Data karyawan berhasil dihapus'
+            ];
+            echo json_encode($json);
+
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
     }
 }
