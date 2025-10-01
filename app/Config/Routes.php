@@ -75,6 +75,7 @@ $routes->match(['get','post'], 'atkkeluar/data', 'AtkKeluar::data');
 $routes->match(['get', 'post'],'atkkeluar/index', 'AtkKeluar::index');
 $routes->match(['get', 'post'],'atkkeluar/input', 'AtkKeluar::input');
 $routes->match(['get', 'post'],'atkkeluar/buatnosjinputan', 'AtkKeluar::buatnosjinputan');
+$routes->match(['get', 'post'],'atkkeluar/datatemp', 'AtkKeluar::datatemp');
 
 //KARYAWAN
 $routes->match(['get', 'post'],'karyawan/formtambah', 'Karyawan::formtambah');

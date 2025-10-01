@@ -62,4 +62,63 @@ class AtkKeluar extends BaseController
         ];
         return view ('atkkeluar/forminputatkkeluar', $data);
     }
+
+    public function tampildatatemp(string $no_sj): array{
+        $db      = \Config\Database::connect();
+        $builder = $db->table('temp_atk_keluar t'); 
+        $builder->select(
+            't.id,
+             t.det_sj,
+             t.det_kode_barang,
+             m.nama_barang,
+             m.harga,
+             t.det_jumlah,
+             t.det_subtotal')
+        ->join('master_atk m', 'm.kode_barang = t.det_kode_barang')   // join manual
+        ->where('t.det_sj',$no_sj);
+
+        // log_message('debug', 'DEBUG tampildatatemp => ' . print_r(
+        // $builder->getCompiledSelect(), true
+        // ));
+        // log_message('debug', 'DEBUG tampildatatemp data => ' . print_r(
+        //     $builder->get()->getResultArray(), true
+        // ));
+
+        return $builder->get()->getResultArray();
+    }
+
+    // public function datatemp(){
+
+    //     if($this->request->isAJAX()){
+    //         $sj = (string) $this->request->getPost('sj');
+
+    //         $data = [
+    //             'datatemp' => $this->tampildatatemp($sj)
+    //         ];
+
+    //         $json = [
+    //             'data' => view('atk/datatemp',$data)
+    //         ];
+    //         echo json_encode($json);
+    //     }else{
+    //         exit('maaf data tidak dipanggil');
+    //     }
+    // }
+
+    public function datatemp(){
+        if($this->request->isAJAX()){
+            $no_sj = (string) $this->request->getPost('no_sj');
+
+            $data = [
+                'datatemp' => $this->tampildatatemp($no_sj)
+            ];
+
+            $json = [
+                'data' => view('atkkeluar/datatemp',$data)
+            ];
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
 }

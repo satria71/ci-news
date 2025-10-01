@@ -91,11 +91,38 @@
                     </div>
                 </div>  
             </div>
+            <div class="col-lg-12 tampildatatemp">
+
+            </div>
         </div>        
     </section>
 <div class="viewmodal" sytel="display: none;"></div>
 
 <script>
+
+function tampildatatemp(){
+    let no_sj = $('#no_sj').val();
+    $.ajax({
+        type: "post",
+        url: "/atkkeluar/datatemp",
+        data: {
+            no_sj : no_sj
+        },
+        dataType: "json",
+        beforeSend: function(){
+            $('.tampildatatemp').html('<i class="fas fa-spin fa-spinner"></i>');
+        },
+        success: function (response) {
+            if(response.data){
+                $('.tampildatatemp').html(response.data);
+            }
+        },
+        error: function(xhr,ajaxOptions,thrownError){
+            alert(xhr.status+'\n'+thrownError);
+        }
+    });
+}
+
 function buatnosjdariinputan(){
     let tanggal = $('#tgl').val();
 
@@ -116,8 +143,11 @@ function buatnosjdariinputan(){
 }
 
 $(document).ready(function () {
+    tampildatatemp();
+
     $('#tgl').change(function (e) { 
         buatnosjdariinputan();
+        tampildatatemp();
     });
 
     $('#tomboltambahkaryawan').click(function (e) { 
