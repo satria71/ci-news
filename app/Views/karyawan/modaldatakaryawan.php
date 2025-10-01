@@ -1,35 +1,4 @@
-    <!-- General CSS Files -->
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
-  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"> -->
-  <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
-  
 
-
-
-  <!-- CSS Libraries -->
-
-  <!-- Paho -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script> -->
-
-
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/style.css">
-  <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/components.css">
-  <link rel="stylesheet" href="<?=base_url()?>/template/assets/css/custom.css">
-
-  <script src="<?=base_url()?>/template/node_modules/jquery/dist/jquery.min.js"></script>
-  <!-- General JS Scripts -->
-  <!-- <script src="<?=base_url()?>/template/node_modules/jquery/dist/jquery.min.js"></script> -->
-  <script src="<?=base_url()?>/template/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="<?=base_url()?>/template/node_modules/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
-  <script src="<?=base_url()?>/template/assets/js/stisla.js"></script>
-  <script src="<?=base_url()?>/template/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
-  <script src="<?=base_url()?>/template/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-  
-  <!-- Template JS File -->
-  <script src="<?=base_url()?>/template/assets/js/scripts.js"></script>
 
   <!-- Page Specific JS File -->
 <!-- Modal -->
@@ -43,7 +12,7 @@
         </button>
       </div>
       <div class="modal-body table-responsive table-bordered">
-        <table class="table table-striped table-sm" id="datakaryawan">
+        <table style="width: 100%;" class="table table-striped table-sm" id="datakaryawan">
             <thead>
                 <tr>
                     <th>No.</th>

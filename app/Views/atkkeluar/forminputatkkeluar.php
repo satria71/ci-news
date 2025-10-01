@@ -118,7 +118,6 @@ function buatnosjdariinputan(){
 $(document).ready(function () {
     $('#tgl').change(function (e) { 
         buatnosjdariinputan();
-        
     });
 
     $('#tomboltambahkaryawan').click(function (e) { 
