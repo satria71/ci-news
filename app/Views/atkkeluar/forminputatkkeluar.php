@@ -99,6 +99,63 @@
 <div class="viewmodal" sytel="display: none;"></div>
 
 <script>
+function kosong(){
+    // $('#sj').val('');
+    $('#kode_barang').val('');
+    $('#nama_barang').val('');
+    $('#harga_keluar').val('');
+    $('#jumlah').val('');
+    $('#kode_barang').focus();
+}
+
+function ambildatabarang(){
+    let kode_barang = $('#kode_barang').val();
+    if(kode_barang.length == 0){
+        swal({
+            icon: "error",
+            title: "Error",
+            text: 'Kode barang belum diisi',
+            button: {
+                text: "OK",
+                className: "btn btn-primary waves-effect"
+            }
+        });
+        kosong();
+    }else{
+        $.ajax({
+            type: "post",
+            url: "/atkkeluar/ambildatabarang",
+            data: {
+                kode_barang : kode_barang
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.sukses){
+                    let data = response.sukses;
+                    $('#nama_barang').val(data.nama_barang);
+                    $('#harga_keluar').val(data.harga);
+                    $('#jumlah').focus();
+                }
+
+                if(response.error){
+                    swal({
+                        icon: "error",
+                        title: "Error",
+                        text: response.error,
+                        button: {
+                            text: "OK",
+                            className: "btn btn-primary waves-effect"
+                        }
+                    });
+                    kosong();
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    }
+}
 
 function tampildatatemp(){
     let no_sj = $('#no_sj').val();
@@ -135,6 +192,7 @@ function buatnosjdariinputan(){
         dataType: "json",
         success: function (response) {
             $('#no_sj').val(response.nosj);
+            tampildatatemp();
         },
         error: function(xhr,ajaxOptions,thrownError){
             alert(xhr.status+'\n'+thrownError);
@@ -142,12 +200,66 @@ function buatnosjdariinputan(){
     });
 }
 
+function simpanitem(){
+    let sj = $('#no_sj').val();
+    let kode_barang = $('#kode_barang').val();
+    let nama_barang = $('#nama_barang').val();
+    let harga_keluar = $('#harga_keluar').val();
+    let jumlah = $('#jumlah').val();
+    
+    if(sj.length == 0 || kode_barang == 0 || harga_keluar == 0 || jumlah == 0){
+        swal({
+            icon: "error",
+            title: "Error",
+            text: 'Maaf sj/kode barang/harga beli/jumlah tidak boleh kosong',
+            button: {
+                text: "OK",
+                className: "btn btn-primary waves-effect"
+            }
+        });
+    }else{
+        $.ajax({
+            type: "post",
+            url: "/atkkeluar/simpantemp",
+            data: {
+                sj : sj,
+                kode_barang : kode_barang,
+                nama_barang : nama_barang,
+                harga_keluar : harga_keluar,
+                jumlah : jumlah
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.error){
+                    swal({
+                        icon: "error",
+                        title: "Error",
+                        text: response.error,
+                        button: {
+                            text: "OK",
+                            className: "btn btn-primary waves-effect"
+                        }
+                    });
+                    kosong();
+                }
+                if(response.sukses){
+                    // alert(response.sukses);
+                    tampildatatemp();
+                    kosong();
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    }
+}
+
 $(document).ready(function () {
     tampildatatemp();
 
     $('#tgl').change(function (e) { 
         buatnosjdariinputan();
-        tampildatatemp();
     });
 
     $('#tomboltambahkaryawan').click(function (e) { 
@@ -179,6 +291,36 @@ $(document).ready(function () {
                 if(response.data){
                     $('.viewmodal').html(response.data).show();
                     $('#modaldatakaryawan').modal('show');
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    });
+
+    $('#kode_barang').keydown(function (e) { 
+        if(e.keyCode==13){
+            e.preventDefault();
+            ambildatabarang();
+        }
+    });
+
+    $('#tombolsimpanitem').click(function (e) { 
+        e.preventDefault();
+        // alert('ini tombol tambah item');
+        simpanitem();
+    });
+
+    $('#tombolcaribarang').click(function (e) { 
+        e.preventDefault();
+        $.ajax({
+            url: "/atkkeluar/modalcaribarang",
+            dataType: "json",
+            success: function (response) {
+                if(response.data){
+                    $('.viewmodal').html(response.data).show();
+                    $('#modalcaribarang').modal('show');
                 }
             },
             error: function(xhr,ajaxOptions,thrownError){

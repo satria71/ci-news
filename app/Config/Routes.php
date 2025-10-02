@@ -76,6 +76,12 @@ $routes->match(['get', 'post'],'atkkeluar/index', 'AtkKeluar::index');
 $routes->match(['get', 'post'],'atkkeluar/input', 'AtkKeluar::input');
 $routes->match(['get', 'post'],'atkkeluar/buatnosjinputan', 'AtkKeluar::buatnosjinputan');
 $routes->match(['get', 'post'],'atkkeluar/datatemp', 'AtkKeluar::datatemp');
+$routes->match(['get', 'post'],'atkkeluar/ambildatabarang', 'AtkKeluar::ambildatabarang');
+$routes->match(['get', 'post'],'atkkeluar/datatemp', 'AtkKeluar::datatemp');
+$routes->match(['get', 'post'],'atkkeluar/simpantemp', 'AtkKeluar::simpantemp');
+$routes->match(['get', 'post'],'atkkeluar/hapus', 'AtkKeluar::hapus');
+$routes->match(['get', 'post'],'atkkeluar/modalcaribarang', 'AtkKeluar::modalcaribarang');
+$routes->match(['get', 'post'],'atkkeluar/listdatabarang', 'AtkKeluar::listdatabarang');
 
 //KARYAWAN
 $routes->match(['get', 'post'],'karyawan/formtambah', 'Karyawan::formtambah');
