@@ -15,8 +15,8 @@
                     <th>No.</th>
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
-                    <th>Harga</th>
                     <th>Stok</th>
+                    <th>Harga</th>
                     <th>Action</th>
                 </tr>
             </thead> 

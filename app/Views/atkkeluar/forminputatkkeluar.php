@@ -70,7 +70,7 @@
                         <label>Nama Barang</label>
                         <input type="text" class="form-control" name="nama_barang" placeholder="Nama Barang" id="nama_barang" readonly>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Harga Keluar</label>
                         <input type="number" class="form-control" name="harga_keluar" placeholder="Harga Keluar" id="harga_keluar" readonly>
                     </div>
@@ -78,18 +78,26 @@
                         <label>Jumlah</label>
                         <input type="number" class="form-control" name="jumlah" id="jumlah">
                     </div>
-                    <div class="form-group col-md-1">
+                    <div class="form-group col-md-2">
                         <label>Aksi</label> 
                         <div class="input-group">
                             <button type="button" class="btn btn-sm btn-icon btn-info waves-effect" title="Simpan Item" id="tombolsimpanitem">
-                                <i class="fas fa-save"> </i>
+                                <i class="fas fa-plus-square"> </i>
                             </button>&ensp;
-                            <button type="button" class="btn btn-sm btn-icon btn-warning waves-effect" title="Reload Data" id="tombolreload">
+                            <!-- <button type="button" class="btn btn-sm btn-icon btn-success waves-effect" title="selesai" id="tombolreload">
                                 <i class="fas fa-sync-alt"></i>
+                            </button> -->
+                            <button type="button" class="btn btn-sm btn-success" id="tombolselesaitransaksi">
+                                <i class="fas fa-save"> Selesai Transaksi</i>
                             </button>
                         </div>
                     </div>
                 </div>  
+                <!-- <div class="row justify-content-end">
+                    <button type="button" class="btn btn-sm btn-success" id="tombolselesaitransaksi">
+                        <i class="fas fa-save"> Selesai Transaksi</i>
+                    </button>
+                </div> -->
             </div>
             <div class="col-lg-12 tampildatatemp">
 
@@ -325,6 +333,97 @@ $(document).ready(function () {
             },
             error: function(xhr,ajaxOptions,thrownError){
                 alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    });
+
+    $('#tombolselesaitransaksi').click(function (e) { 
+        e.preventDefault();
+        swal({
+            title: "Selesai Transaksi Input ?",
+            text: "Yakin transaksi ini akan disimpan ?",
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "Cancel",
+                    value: null,
+                    visible: true,
+                    className: "btn btn-outline-secondary waves-effect",
+                    closeModal: true,
+                },
+                confirm: {
+                    text: "Ya, simpan",
+                    value: true,
+                    visible: true,
+                    className: "btn btn-primary me-3 waves-effect waves-light",
+                    closeModal: true,
+                }
+            },
+            dangerMode: true,
+            className: "my-custom-swal"
+        }).then(function(isConfirmed){
+            if(isConfirmed){
+                $.ajax({
+                    type: "post",
+                    url: "/atkkeluar/selesaitransaksi",
+                    data: {
+                        no_sj : $('#no_sj').val(),
+                        tgl : $('#tgl').val(),
+                        nik : $('#nik').val(),
+                        total_harga : $('#total_harga').val(),
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if(response.error){
+                            swal({
+                                icon: "error",
+                                title: "Error",
+                                text: response.error,
+                                button: {
+                                    text: "OK",
+                                    className: "btn btn-primary waves-effect"
+                                }
+                            });
+                        }
+
+                        if(response.sukses){
+                            swal({
+                                title: "Cetak Surat Jalan ?",
+                                text: response.sukses + " ,cetak surat jalan ?",
+                                icon: "warning",
+                                buttons: {
+                                    cancel: {
+                                        text: "Cancel",
+                                        value: null,
+                                        visible: true,
+                                        className: "btn btn-outline-secondary waves-effect",
+                                        closeModal: true,
+                                    },
+                                    confirm: {
+                                        text: "Ya, cetak",
+                                        value: true,
+                                        visible: true,
+                                        className: "btn btn-primary me-3 waves-effect waves-light",
+                                        closeModal: true,
+                                    }
+                                },
+                                dangerMode: true,
+                                className: "my-custom-swal"
+                            }).then(function(isConfirmed){
+                                if(isConfirmed){
+                                    let windowcetak = window.open(response.cetaksj, "Cetak Surat Jalan", "width=200, height=400");
+                                    windowcetak.focus();
+                                    window.location.reload();
+                                }else{
+                                    window.location.reload();
+                                }
+                            }); 
+                        }
+                    },
+                    error: function(xhr,ajaxOptions,thrownError){
+                        alert(xhr.status+'\n'+thrownError);
+                    }
+                });
             }
         });
     });

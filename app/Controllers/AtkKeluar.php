@@ -88,11 +88,12 @@ class AtkKeluar extends BaseController
         return $builder->get()->getResultArray();
     }
 
-    public function ambilstokbarang(string $kode_barang): array{
+    public function ambilstokbarang(string $kode_barang): int{
         $db      = \Config\Database::connect();
         $builder = $db->table('master_atk'); 
         $builder->select('stok')
         ->where('kode_barang',$kode_barang);
+        $result = $builder->get()->getRowArray();
 
         // log_message('debug', 'DEBUG tampildatatemp => ' . print_r(
         // $builder->getCompiledSelect(), true
@@ -101,7 +102,7 @@ class AtkKeluar extends BaseController
         //     $builder->get()->getResultArray(), true
         // ));
 
-        return $builder->get()->getResultArray();
+        return $result ? intval($result['stok']) : 0;
     }
 
     public function datatemp(){
@@ -170,7 +171,8 @@ class AtkKeluar extends BaseController
             ];
 
             $stokbarang = $this->ambilstokbarang($kode_barang);
-            if($jumlah > intval($stokbarang)){
+
+            if($jumlah > $stokbarang){
                 $json = [
                     'error' => 'Stok tidak mencukupi'
                 ];
@@ -310,5 +312,78 @@ class AtkKeluar extends BaseController
         ];
 
         return $this->response->setJSON($output);
+    }
+
+    public function hapusdatatemp($no_sj){
+        $db      = \Config\Database::connect();
+        $buildertemp = $db->table('temp_atk_keluar');
+        $buildertemp->where('det_sj', $no_sj);
+        $deleted = $buildertemp->delete();
+
+        return $deleted; // return true/false sesuai hasil
+    }
+
+    public function selesaitransaksi(){
+        if($this->request->isAJAX()){
+            $db      = \Config\Database::connect();
+            $buildertemp = $db->table('temp_atk_keluar');
+
+            $no_sj = $this->request->getPost('no_sj');
+            $tgl = $this->request->getPost('tgl');
+            $nik = $this->request->getPost('nik');
+            $total_harga = $this->request->getPost('total_harga');
+
+            $query = $buildertemp->where('det_sj', $no_sj)->get();
+            $datatemp = $query->getResultArray();
+            
+            $cekdata = $this->tampildatatemp($no_sj);
+
+            if(count($cekdata) > 0){
+                $db      = \Config\Database::connect();
+                $builder = $db->table('atk_keluar');
+                $builder2 = $db->table('detail_atk_keluar');
+                
+                $data = [
+                    'no_sj' => $no_sj,
+                    'tgl' => $tgl,
+                    'nik' => $nik,
+                    'total_harga' => $total_harga
+                ];
+
+                $builder->insert($data);
+
+                //simpan ke table detail atk masuk
+                foreach ($datatemp as $row) :
+                    $data2 = [
+                        'det_sj' => $row['det_sj'],
+                        'det_kode_barang' => $row['det_kode_barang'],
+                        'det_harga_keluar' => $row['det_harga_keluar'],
+                        'det_jumlah' => $row['det_jumlah'],
+                        'det_subtotal' => $row['det_subtotal'],
+                    ];
+
+                    $builder2->insert($data2);
+                endforeach;
+
+            
+                //hapus data di table temp
+                // $buildertemp->$this->hapusdatatemp($no_sj);
+                $this->hapusdatatemp($no_sj);
+
+                $json = [
+                    'sukses' => 'Transaksi berhasil disimpan',
+                    'cetaksj' => site_url('atkkeluar/cetaksj/'. $no_sj)
+                ];
+            }else{
+                $json = [
+                    'error' => 'Maaf item masih kosong'
+                ];
+            }
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+
+        echo json_encode($json);
+
     }
 }

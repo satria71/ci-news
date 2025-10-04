@@ -44,6 +44,7 @@
                     <td style="text-align: center;">
                         <?= number_format($row['det_subtotal'], 0, ",", ".") ?>
                     </td>
+                    <input type="hidden" id="total_harga" value="<?= $totalharga; ?>">
                     <td>
                     <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapusitem('<?= $row['id'] ?>')">
                             <i class="fas fa-trash-alt"></i>
