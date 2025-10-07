@@ -88,6 +88,32 @@ class AtkKeluar extends BaseController
         return $builder->get()->getResultArray();
     }
 
+    public function tampildatadetail(string $no_sj): array{
+        $db      = \Config\Database::connect();
+        $builder = $db->table('detail_atk_keluar t'); 
+        $builder->select(
+            't.id,
+             t.det_sj,
+             t.det_kode_barang,
+             m.nama_barang,
+             m.harga,
+             m.satuan,
+             t.det_harga_keluar,
+             t.det_jumlah,
+             t.det_subtotal')
+        ->join('master_atk m', 'm.kode_barang = t.det_kode_barang')   // join manual
+        ->where('t.det_sj',$no_sj);
+
+        // log_message('debug', 'DEBUG tampildatatemp => ' . print_r(
+        // $builder->getCompiledSelect(), true
+        // ));
+        // log_message('debug', 'DEBUG tampildatatemp data => ' . print_r(
+        //     $builder->get()->getResultArray(), true
+        // ));
+
+        return $builder->get()->getResultArray();
+    }
+
     public function ambilstokbarang(string $kode_barang): int{
         $db      = \Config\Database::connect();
         $builder = $db->table('master_atk'); 
@@ -385,5 +411,264 @@ class AtkKeluar extends BaseController
 
         echo json_encode($json);
 
+    }
+
+    public function cetaksj($no_sj){
+        $db      = \Config\Database::connect();
+        $atk_keluar = $db->table('atk_keluar');
+        $det_atk_keluar = $db->table('detail_atk_keluar');
+        $karyawan = $db->table('karyawan');
+
+        $cekdata = $atk_keluar->where('no_sj', $no_sj)->get()->getRowArray();
+        $datakaryawan = $karyawan->where('nik', $cekdata['nik'])->get()->getRowArray();
+
+        $namakaryawan = ($datakaryawan != null) ? $datakaryawan['nama_karyawan'] : "-";
+        $bagiankaryawan = ($datakaryawan != null) ? $datakaryawan['bagian'] : "-";
+
+        if($cekdata != null){
+            $data = [
+                'no_sj' => $no_sj,
+                'tgl' => $cekdata['tgl'],
+                'namakaryawan' => $namakaryawan,
+                'bagian' => $bagiankaryawan,
+                'detailatk' => $this->tampildatadetail($no_sj)
+            ];
+
+            return view('atkkeluar/cetaksj', $data);
+        }else{
+            return redirect()->to(site_url('atkkeluar/input'));
+        }
+    }
+
+    public function listdata()
+    {
+        $tglawal = $this->request->getPost('tglawal');
+        $tglakhir = $this->request->getPost('tglakhir');
+
+        $request = Services::request();
+        $db      = db_connect();
+
+        // ===================== KONFIGURASI =====================
+        $table         = 'atk_keluar a';                  // ganti dengan nama tabel
+        $columnOrder   = [null,'a.no_sj','a.tgl','k.nama_karyawan','k.bagian','a.total_harga',null];         // kolom yang bisa di-order
+        $columnSearch  = ['a.no_sj','k.nama_karyawan','k.bagian'];              // kolom yang bisa di-search
+        $defaultOrder  = ['a.no_sj' => 'DESC'];              // default order
+
+        // ===================== BASE QUERY =====================
+        $builder = $db->table($table);
+        $builder->select('a.no_sj, a.tgl, a.total_harga, k.nik, k.nama_karyawan, k.bagian');
+        $builder->join('karyawan k', 'k.nik = a.nik', 'left');
+        
+        // -------- Filter tanggal (jika ada) --------
+        if (!empty($tglawal) && !empty($tglakhir)) {
+            $builder->where('a.tgl >=', $tglawal);
+            $builder->where('a.tgl <=', $tglakhir);
+        }
+
+        // -------- Search --------
+        $search = $request->getPost('search')['value'] ?? null;
+        if ($search) {
+            $builder->groupStart();
+            foreach ($columnSearch as $i => $col) {
+                $i === 0
+                    ? $builder->like($col, $search)
+                    : $builder->orLike($col, $search);
+            }
+            $builder->groupEnd();
+        }
+
+        // -------- Order --------
+        $orderPost = $request->getPost('order');
+        if ($orderPost) {
+            $colIndex = $orderPost[0]['column'];
+            $dir      = $orderPost[0]['dir'];
+            $builder->orderBy($columnOrder[$colIndex], $dir);
+        } else {
+            $builder->orderBy(key($defaultOrder), current($defaultOrder));
+        }
+
+        // -------- Paging --------
+        $length = (int) $request->getPost('length');
+        $start  = (int) $request->getPost('start');
+        if ($length !== -1) {
+            $builder->limit($length, $start);
+        }
+
+        // ===================== AMBIL DATA =====================
+        $lists = $builder->get()->getResult();
+
+        // ===================== HITUNG TOTAL/FILTERED =====================
+        // total semua data (tanpa filter)
+        $recordsTotal = $db->table('atk_keluar')->countAllResults();
+
+        // total data setelah filter
+        $builderFilter = $db->table('atk_keluar a');
+        $builderFilter->join('karyawan k', 'k.nik = a.nik', 'left');
+        if (!empty($tglawal) && !empty($tglakhir)) {
+            $builderFilter->where('a.tgl >=', $tglawal);
+            $builderFilter->where('a.tgl <=', $tglakhir);
+        }
+        if ($search) {
+            $builderFilter->groupStart();
+            foreach ($columnSearch as $i => $col) {
+                $i === 0
+                    ? $builderFilter->like($col, $search)
+                    : $builderFilter->orLike($col, $search);
+            }
+            $builderFilter->groupEnd();
+        }
+        $recordsFiltered = $builderFilter->countAllResults();
+
+        // ===================== FORMAT DATA UNTUK DATATABLES =====================
+        $data = [];
+        $no   = $start;
+        foreach ($lists as $list) {
+            $no++;
+            $row   = [];
+            $tombolcetak = "<button type=\"button\" class=\"btn btn-sm btn-info\" onclick=\"cetak('".$list->no_sj."')\">
+            <i class=\"fas fa-print\"></i></button>";
+            $tomboledit = "<button type=\"button\" class=\"btn btn-sm btn-warning\" onclick=\"edit('".$list->no_sj."')\">
+            <i class=\"fas fa-edit\"></i></button>";
+            $tombolhapus = "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"hapus('".$list->no_sj."')\">
+            <i class=\"fas fa-trash-alt\"></i></button>";
+            
+            $row[] = $no;             // contoh nomor urut
+            $row[] = $list->no_sj;             // contoh nomor urut
+            $row[] = $list->tgl;     // contoh kolom
+            $row[] = $list->nama_karyawan;
+            $row[] = $list->bagian;
+            $row[] = number_format($list->total_harga,0,',','.');
+            $row[] = $tombolcetak . " " . $tomboledit . " " . $tombolhapus;
+            // tambahkan kolom lain sesuai kebutuhan
+            $data[] = $row;
+        }
+
+        $output = [
+            "draw"            => $request->getPost('draw'),
+            "recordsTotal"    => $recordsTotal,
+            "recordsFiltered" => $recordsFiltered,
+            "data"            => $data
+        ];
+
+        return $this->response->setJSON($output);
+    }   
+
+    public function hapustransaksi(){
+        if($this->request->isAJAX()){
+            $db      = \Config\Database::connect();
+            $atk_keluar = $db->table('atk_keluar');
+            $detail_atk_keluar = $db->table('detail_atk_keluar');
+
+            $no_sj = $this->request->getPost('no_sj');
+            
+            $atk_keluar->where('no_sj', $no_sj);
+            $atk_keluar->delete();
+            $detail_atk_keluar->where('det_sj', $no_sj);
+            $detail_atk_keluar->delete();
+
+            $json = [
+                'sukses' => 'Transaksi berhasil dihapus'
+            ];
+            echo json_encode($json);
+
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function edit($no_sj){
+        $db      = \Config\Database::connect();
+        $atk_keluar = $db->table('atk_keluar');
+        $karyawan = $db->table('karyawan');
+
+        $rowdata = $atk_keluar->where('no_sj', $no_sj)->get()->getRowArray();
+        $datakaryawan = $karyawan->where('nik', $rowdata['nik'])->get()->getRowArray();
+
+        $namakaryawan = ($datakaryawan != null) ? $datakaryawan['nama_karyawan'] : "-";
+        $bagiankaryawan = ($datakaryawan != null) ? $datakaryawan['bagian'] : "-";
+
+        if($rowdata != null){
+            $data = [
+                'no_sj' => $no_sj,
+                'tgl' => $rowdata['tgl'],
+                'nama_karyawan' => $namakaryawan,
+                'bagian' => $bagiankaryawan,
+                'detailatk' => $this->tampildatadetail($no_sj)
+            ];
+        }
+
+        return view('atkkeluar/formedit', $data);
+    }
+
+    public function ambiltotalharga($no_sj){
+        $db      = \Config\Database::connect();
+        $builder = $db->table('detail_atk_keluar')->getWhere([
+            'det_sj' => $no_sj
+        ]);
+        $totalharga = 0;
+        
+        foreach($builder->getResultArray() as $ar){
+            $totalharga += $ar['det_subtotal'];
+        }
+        
+        return $totalharga;
+    }
+
+    public function datadetailsj($no_sj){
+        $db      = \Config\Database::connect();
+        $builder = $db->table('detail_atk_keluar d');
+        $builder->select(
+            'm.kode_barang,
+             d.id,
+             d.det_sj,
+             m.nama_barang,
+             m.harga,
+             d.det_kode_barang,
+             d.det_harga_keluar,
+             d.det_jumlah,
+             d.det_subtotal')
+        ->join('master_atk m', 'd.det_kode_barang = m.kode_barang', 'left')   // join manual
+        ->where('d.det_sj', $no_sj);
+
+        $query = $builder->get();
+        $data = $query->getResultArray();
+        return ($data);
+    }
+
+    public function totalharga(){
+        if($this->request->isAJAX()){
+            $sj = (string) $this->request->getPost('no_sj');
+
+            $data = [
+                'datadetailsj' => $this->datadetailsj($sj)
+            ];
+
+            $totalhargasj = number_format($this->ambiltotalharga($sj),0,",",".");
+
+            $json = [
+                // 'data' => view('atk/formedit',$data),
+                'totalharga' => "Rp. ". $totalhargasj
+            ];
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function datadetail(){
+        if($this->request->isAJAX()){
+            $sj = (string) $this->request->getPost('no_sj');
+
+            $data = [
+                'datatemp' => $this->tampildatadetail($sj)
+            ];
+
+            $json = [
+                'data' => view('atkkeluar/datadetail',$data)
+            ];
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
     }
 }

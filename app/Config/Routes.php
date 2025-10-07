@@ -84,6 +84,12 @@ $routes->match(['get', 'post'],'atkkeluar/modalcaribarang', 'AtkKeluar::modalcar
 $routes->match(['get', 'post'],'atkkeluar/listdatabarang', 'AtkKeluar::listdatabarang');
 $routes->match(['get', 'post'],'atkkeluar/selesaitransaksi', 'AtkKeluar::selesaitransaksi');
 $routes->match(['get', 'post'],'atkkeluar/cetaksj/(:any)', 'AtkKeluar::cetaksj/$1');
+$routes->match(['get', 'post'],'atkkeluar/listdata', 'AtkKeluar::listdata');
+$routes->match(['get', 'post'],'atkkeluar/hapustransaksi', 'AtkKeluar::hapustransaksi');
+$routes->match(['get', 'post'],'atkkeluar/edit/(:any)', 'AtkKeluar::edit/$1');
+$routes->match(['get', 'post'],'atkkeluar/ambiltotalharga', 'AtkKeluar::ambiltotalharga');
+$routes->match(['get', 'post'],'atkkeluar/totalharga', 'AtkKeluar::totalharga');
+$routes->match(['get', 'post'],'atkkeluar/datadetail', 'AtkKeluar::datadetail');
 
 //KARYAWAN
 $routes->match(['get', 'post'],'karyawan/formtambah', 'Karyawan::formtambah');

@@ -88,7 +88,7 @@
                                 <i class="fas fa-sync-alt"></i>
                             </button> -->
                             <button type="button" class="btn btn-sm btn-success" id="tombolselesaitransaksi">
-                                <i class="fas fa-save"> Selesai Transaksi</i>
+                                <i class="fas fa-save"> Selesai</i>
                             </button>
                         </div>
                     </div>
@@ -411,7 +411,7 @@ $(document).ready(function () {
                                 className: "my-custom-swal"
                             }).then(function(isConfirmed){
                                 if(isConfirmed){
-                                    let windowcetak = window.open(response.cetaksj, "Cetak Surat Jalan", "width=200, height=400");
+                                    let windowcetak = window.open(response.cetaksj, "Cetak Surat Jalan", "width=1000, height=500");
                                     windowcetak.focus();
                                     window.location.reload();
                                 }else{
