@@ -46,9 +46,12 @@
                     </td>
                     <input type="hidden" id="total_harga" value="<?= $totalharga; ?>">
                     <td>
+                    <button type="button" class="btn btn-sm btn-outline-warning" onclick="edititem('<?= $row['id'] ?>')">
+                            <i class="fas fa-edit"></i>
+                    </button>
                     <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapusitem('<?= $row['id'] ?>')">
                             <i class="fas fa-trash-alt"></i>
-                    </button> 
+                    </button>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -58,58 +61,107 @@
 
 
 <script>
-    function hapusitem(id){
-        swal({
-            title: "Hapus Item",
-            text: "Yakin menghapus item ini ?",
-            icon: "warning",
-            buttons: {
-                cancel: {
-                    text: "Cancel",
-                    value: null,
-                    visible: true,
-                    className: "btn btn-outline-secondary waves-effect",
-                    closeModal: true,
-                },
-                confirm: {
-                    text: "Ya, hapus!",
-                    value: true,
-                    visible: true,
-                    className: "btn btn-primary me-3 waves-effect waves-light",
-                    closeModal: true,
-                }
-            },
-            dangerMode: true,
-            className: "my-custom-swal"
-        }).then(function(isConfirmed){
-            if(isConfirmed){
-                $.ajax({
-                    type: "post",
-                    url: "/atkkeluar/hapus",
-                    data: {
-                        id : id
-                    },
-                    dataType: "json",
-                    success: function (response) {
-                        if(response.sukses){
-                            tampildatatemp();
+function edititem(id){
+    $('#iddetailsj').val(id);
 
-                            swal({
-                                icon: "success",
-                                title: "Berhasil!",
-                                text: response.sukses,
-                                button: {
-                                    text: "OK",
-                                    className: "btn btn-success waves-effect"
-                                }
-                            });
-                        }
-                    },
-                    error: function(xhr,ajaxOptions,thrownError){
-                        alert(xhr.status+'\n'+thrownError);
-                    }
-                });
+    $.ajax({
+        type: "post",
+        url: "/atkkeluar/edititem",
+        data: {
+            iddetailsj : $('#iddetailsj').val()
+        },
+        dataType: "json",
+        success: function (response) {
+            if(response.sukses){
+                let data = response.sukses;
+                $('#kode_barang').val(data.kode_barang);
+                $('#nama_barang').val(data.nama_barang);
+                $('#harga_keluar').val(data.harga);
+                $('#jumlah').val(data.jumlah);
+
+                $('#tombolbatal').fadeIn();
+                $('#tomboledititem').fadeIn();
+                $('#kode_barang').prop('readonly', true);
+                $('#tombolcaribarang').prop('disabled', true);
+                $('#tomboltambahitem').fadeOut();
             }
-        });  
-    }
+        },
+        error: function(xhr,ajaxOptions,thrownError){
+            alert(xhr.status+'\n'+thrownError);
+        }
+    });
+}
+
+function batal(){
+    $('#tombolbatal').click(function (e) { 
+        e.preventDefault();
+        kosong();
+        tampildatadetail();
+        $('#kode_barang').prop('readonly', false);
+        $('#tombolcaribarang').prop('disabled', false);
+        $('#tomboltambahitem').fadeIn();
+        $('#tombolbatal').fadeOut();
+        $('#tomboledititem').fadeOut();
+    });
+}
+
+function hapusitem(id){
+    swal({
+        title: "Hapus Item",
+        text: "Yakin menghapus item ini ?",
+        icon: "warning",
+        buttons: {
+            cancel: {
+                text: "Cancel",
+                value: null,
+                visible: true,
+                className: "btn btn-outline-secondary waves-effect",
+                closeModal: true,
+            },
+            confirm: {
+                text: "Ya, hapus!",
+                value: true,
+                visible: true,
+                className: "btn btn-primary me-3 waves-effect waves-light",
+                closeModal: true,
+            }
+        },
+        dangerMode: true,
+        className: "my-custom-swal"
+    }).then(function(isConfirmed){
+        if(isConfirmed){
+            $.ajax({
+                type: "post",
+                url: "/atkkeluar/hapusitemdetail",
+                data: {
+                    id : id
+                },
+                dataType: "json",
+                success: function (response) {
+                    if(response.sukses){
+                        tampildatadetail();
+                        tampiltotalharga();
+
+                        swal({
+                            icon: "success",
+                            title: "Berhasil!",
+                            text: response.sukses,
+                            button: {
+                                text: "OK",
+                                className: "btn btn-success waves-effect"
+                            }
+                        });
+                    }
+                },
+                error: function(xhr,ajaxOptions,thrownError){
+                    alert(xhr.status+'\n'+thrownError);
+                }
+            });
+        }
+    });  
+}
+
+$(document).ready(function () {
+    batal();
+});
 </script>

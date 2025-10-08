@@ -90,6 +90,10 @@ $routes->match(['get', 'post'],'atkkeluar/edit/(:any)', 'AtkKeluar::edit/$1');
 $routes->match(['get', 'post'],'atkkeluar/ambiltotalharga', 'AtkKeluar::ambiltotalharga');
 $routes->match(['get', 'post'],'atkkeluar/totalharga', 'AtkKeluar::totalharga');
 $routes->match(['get', 'post'],'atkkeluar/datadetail', 'AtkKeluar::datadetail');
+$routes->match(['get', 'post'],'atkkeluar/hapusitemdetail', 'AtkKeluar::hapusitemdetail');
+$routes->match(['get', 'post'],'atkkeluar/edititem', 'AtkKeluar::edititem');
+$routes->match(['get', 'post'],'atkkeluar/updateitemsj', 'AtkKeluar::updateitemsj');
+$routes->match(['get', 'post'],'atkkeluar/simpandetail', 'AtkKeluar::simpandetail');
 
 //KARYAWAN
 $routes->match(['get', 'post'],'karyawan/formtambah', 'Karyawan::formtambah');
@@ -97,3 +101,8 @@ $routes->match(['get', 'post'],'karyawan/simpan', 'Karyawan::simpan');
 $routes->match(['get', 'post'],'karyawan/modaldatakaryawan', 'Karyawan::modaldatakaryawan');
 $routes->match(['get', 'post'],'karyawan/listdata', 'Karyawan::listdata');
 $routes->match(['get', 'post'],'karyawan/hapus', 'Karyawan::hapus');
+
+//LAPORAN
+$routes->match(['get', 'post'],'laporan/data', 'laporan::index');
+$routes->match(['get', 'post'],'laporan/cetakatkmasuk', 'laporan::cetakatkmasuk');
+$routes->match(['get', 'post'],'laporan/cetakatkmasukperiode', 'laporan::cetakatkmasukperiode');

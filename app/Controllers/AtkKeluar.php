@@ -671,4 +671,182 @@ class AtkKeluar extends BaseController
             exit('maaf data tidak dipanggil');
         }
     }
+
+    public function updatetotalharga($no_sj, $total){
+        $db      = \Config\Database::connect();
+        return $db->table('atk_keluar')
+              ->where('no_sj', $no_sj)
+              ->update(['total_harga' => $total]);
+
+        // $builder = $db->table('detail_atk_masuk')->where([
+        //     'det_sj' => $no_sj
+        // ]);
+        
+        // return $builder;
+    }
+
+
+    public function hapusitemdetail(){
+        if($this->request->isAJAX()){
+            $id = $this->request->getPost('id');
+            // $sj = $this->request->getPost('sj');
+
+            $db      = \Config\Database::connect();
+            $builder = $db->table('detail_atk_keluar');
+
+            $row = $builder->select('det_sj')->where('id', $id)->get()->getRowArray();
+
+            if($row){
+                $sj = $row['det_sj'];
+
+                $builder->where('id', $id);
+                $builder->delete();
+
+                $totalhargasj = $this->ambiltotalharga($sj);
+
+                $this->updatetotalharga($sj, $totalhargasj);
+                
+                $json = [
+                    'sukses' => 'Item berhasil dihapus'
+                ];
+            }else{
+                $json = [
+                    'error' => 'Data tidak ditemukan'
+                ];
+            }
+            echo json_encode($json);
+
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function ambildetailberdasarkanid($iddetailsj){
+        $db      = \Config\Database::connect();
+        $builder = $db->table('detail_atk_keluar d');
+        $builder->select(
+            'm.kode_barang,
+             d.id,
+             d.det_sj,
+             m.nama_barang,
+             m.harga,
+             d.det_kode_barang,
+             d.det_harga_keluar,
+             d.det_jumlah,
+             d.det_subtotal')
+        ->join('master_atk m', 'd.det_kode_barang = m.kode_barang', 'left')   // join manual
+        ->where('d.id', $iddetailsj);
+
+        $query = $builder->get();
+        $data = $query->getRowArray();
+        return ($data);
+    }
+
+    public function edititem(){
+        if($this->request->isAJAX()){
+            $iddetailsj = $this->request->getPost('iddetailsj');
+
+            $ambildata = $this->ambildetailberdasarkanid($iddetailsj);
+
+            $row = $ambildata;
+            // ✅ Cek apakah data ditemukan
+            // if (!$row) {
+            //     return $this->response->setStatusCode(404)
+            //                             ->setJSON(['error' => 'Data detail tidak ditemukan']);
+            // }
+
+            $data = [
+                'kode_barang' => $row['det_kode_barang'],
+                'nama_barang' => $row['nama_barang'],
+                'harga' => $row['harga'],
+                'jumlah' => $row['det_jumlah'],
+            ];
+
+            $json = [
+                'sukses' => $data
+            ];
+
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function updateitemsj(){
+        if($this->request->isAJAX()){
+            $db      = \Config\Database::connect();
+            $detailatkkeluar = $db->table('detail_atk_keluar'); 
+            $atkkeluar = $db->table('atk_keluar'); 
+
+            $sj = $this->request->getPost('sj');
+            $jumlah = $this->request->getPost('jumlah');
+            $iddetailsj = $this->request->getPost('iddetailsj');
+
+            $rowdata = $detailatkkeluar->where('det_sj', $sj)->get()->getRowArray();
+            $no_sj = $rowdata['det_sj'];
+            $harga_keluar = $rowdata['det_harga_keluar'];
+
+
+            $data = [
+                'det_jumlah' => $jumlah,
+                'det_subtotal' => intval($harga_keluar) * $jumlah
+            ];
+
+            $detailatkkeluar->update($data, ['id' => $iddetailsj]);
+
+            $totalhargasj = $this->ambiltotalharga($sj);
+
+            $this->updatetotalharga($sj, $totalhargasj);
+
+            // var_dump($this->request->getPost());
+
+            $json = [
+                'sukses' => 'Item berhasil diupdate'
+            ];
+
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function simpandetail(){
+        if($this->request->isAJAX()){
+            $db      = \Config\Database::connect();
+            $builder = $db->table('detail_atk_keluar'); 
+
+            $sj = $this->request->getPost('sj');
+            $kode_barang = $this->request->getPost('kode_barang');
+            $harga_keluar = $this->request->getPost('harga_keluar');
+            $jumlah = $this->request->getPost('jumlah');
+
+            $data = [
+                'det_sj' => $sj,
+                'det_kode_barang' => $kode_barang,
+                'det_harga_keluar' => $harga_keluar,
+                'det_jumlah' => $jumlah,
+                'det_subtotal' => intval($jumlah) * intval($harga_keluar)
+            ];
+
+            $stokbarang = $this->ambilstokbarang($kode_barang);
+
+            if($jumlah > $stokbarang){
+                $json = [
+                    'error' => 'Stok tidak mencukupi'
+                ];
+            }else{
+                $builder->insert($data);
+                $totalhargasj = $this->ambiltotalharga($sj);
+                $this->updatetotalharga($sj, $totalhargasj);
+
+                $json = [
+                    'sukses' => 'Item berhasil ditambahkan'
+                ];
+            }
+
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }    
 }

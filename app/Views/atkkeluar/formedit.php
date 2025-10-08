@@ -8,7 +8,7 @@
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="<?=site_url('atkkeluar/viewdata')?>" class="btn"><i class="fas fa-arrow-left"></i></a>
+                <a href="<?=site_url('atkkeluar/data')?>" class="btn"><i class="fas fa-arrow-left"></i></a>
             </div>
             <h1>Edit Transaksi ATK Keluar</h1>
         </div>
@@ -80,15 +80,18 @@
                     <div class="form-group col-md-2">
                         <label>Aksi</label> 
                         <div class="input-group">
-                            <button type="button" class="btn btn-sm btn-icon btn-info waves-effect" title="Simpan Item" id="tombolsimpanitem">
+                            <button type="button" class="btn btn-sm btn-icon btn-success waves-effect" title="Tambah Item" id="tomboltambahitem">
                                 <i class="fas fa-plus-square"> </i>
-                            </button>&ensp;
-                            <!-- <button type="button" class="btn btn-sm btn-icon btn-success waves-effect" title="selesai" id="tombolreload">
-                                <i class="fas fa-sync-alt"></i>
-                            </button> -->
-                            <button type="button" class="btn btn-sm btn-success" id="tombolselesaitransaksi">
-                                <i class="fas fa-save"> Selesai</i>
                             </button>
+                            <button type="button" style="display:none;" class="btn btn-sm btn-icon btn-info waves-effect" title="Edit Item" id="tomboledititem">
+                                <i class="fas fa-edit"> </i>
+                            </button>&ensp;
+                            <button type="button" style="display:none;" class="btn btn-sm btn-icon btn-primary waves-effect" title="Batalkan" id="tombolbatal">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                            <!-- <button type="button" class="btn btn-sm btn-success" id="tombolselesaitransaksi">
+                                <i class="fas fa-save"> Selesai</i>
+                            </button> -->
                         </div>
                     </div>
                 </div>  
@@ -98,6 +101,7 @@
                     </button>
                 </div> -->
             </div>
+            <input type="hidden" name="iddetailsj" id="iddetailsj">
             <div class="col-lg-12 tampildatadetail">
 
             </div>
@@ -113,6 +117,120 @@ function kosong(){
     $('#harga_keluar').val('');
     $('#jumlah').val('');
     $('#kode_barang').focus();
+}
+
+function ambildatabarang(){
+    let kode_barang = $('#kode_barang').val();
+    if(kode_barang.length == 0){
+        swal({
+            icon: "error",
+            title: "Error",
+            text: 'Kode barang belum diisi',
+            button: {
+                text: "OK",
+                className: "btn btn-primary waves-effect"
+            }
+        });
+        kosong();
+    }else{
+        $.ajax({
+            type: "post",
+            url: "/atkkeluar/ambildatabarang",
+            data: {
+                kode_barang : kode_barang
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.sukses){
+                    let data = response.sukses;
+                    $('#nama_barang').val(data.nama_barang);
+                    $('#harga_keluar').val(data.harga);
+                    $('#jumlah').focus();
+                }
+
+                if(response.error){
+                    swal({
+                        icon: "error",
+                        title: "Error",
+                        text: response.error,
+                        button: {
+                            text: "OK",
+                            className: "btn btn-primary waves-effect"
+                        }
+                    });
+                    kosong();
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    }
+}
+
+function simpanitem(){
+    let sj = $('#sj').val();
+    let kode_barang = $('#kode_barang').val();
+    let nama_barang = $('#nama_barang').val();
+    let harga_keluar = $('#harga_keluar').val();
+    let jumlah = $('#jumlah').val();
+    
+    if(sj.length == 0 || kode_barang == 0 || harga_keluar == 0 || jumlah == 0){
+        swal({
+            icon: "error",
+            title: "Error",
+            text: 'Maaf sj/kode barang/harga beli/jumlah tidak boleh kosong',
+            button: {
+                text: "OK",
+                className: "btn btn-primary waves-effect"
+            }
+        });
+    }else{
+        $.ajax({
+            type: "post",
+            url: "/atkkeluar/simpandetail",
+            data: {
+                sj : sj,
+                kode_barang : kode_barang,
+                nama_barang : nama_barang,
+                harga_keluar : harga_keluar,
+                jumlah : jumlah
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.error){
+                    swal({
+                        icon: "error",
+                        title: "Error",
+                        text: response.error,
+                        button: {
+                            text: "OK",
+                            className: "btn btn-primary waves-effect"
+                        }
+                    });
+                    kosong();
+                }
+                if(response.sukses){
+                    // alert(response.sukses);
+                    swal({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: response.sukses,
+                        button: {
+                            text: "OK",
+                            className: "btn btn-primary waves-effect"
+                        }
+                    });
+                    tampildatadetail();
+                    tampiltotalharga();
+                    kosong();
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    }
 }
 
 function tampildatadetail(){
@@ -165,6 +283,70 @@ function tampiltotalharga(){
 $(document).ready(function () {
     tampiltotalharga();
     tampildatadetail();
+
+    $('#tomboltambahitem').click(function (e) { 
+        e.preventDefault();
+        // alert('ini tombol tambah item');
+        simpanitem();
+    });
+
+    $('#tombolcaribarang').click(function (e) { 
+        e.preventDefault();
+        $.ajax({
+            url: "/atkkeluar/modalcaribarang",
+            dataType: "json",
+            success: function (response) {
+                if(response.data){
+                    $('.viewmodal').html(response.data).show();
+                    $('#modalcaribarang').modal('show');
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    });
+
+    $('#tomboledititem').click(function (e) { 
+        e.preventDefault();
+        let sj = $('#sj').val();
+        let jumlah = $('#jumlah').val();
+
+        $.ajax({
+            type: "post",
+            url: "/atkkeluar/updateitemsj",
+            data: {
+                iddetailsj : $('#iddetailsj').val(),
+                sj : sj,
+                jumlah : jumlah
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.sukses){
+                    swal({
+                        icon: "success",
+                        title: "Berhasil!",
+                        text: response.sukses,
+                        button: {
+                            text: "OK",
+                            className: "btn btn-success waves-effect"
+                        }
+                    });
+                    tampildatadetail();
+                    tampiltotalharga();
+                    kosong();
+                    $('#kode_barang').prop('readonly', false);
+                    $('#tombolcaribarang').prop('disabled', false);
+                    $('#tomboltambahitem').fadeIn();
+                    $('#tombolbatal').fadeOut();
+                    $('#tomboledititem').fadeOut();
+                }
+            },
+            error: function(xhr,ajaxOptions,thrownError){
+                alert(xhr.status+'\n'+thrownError);
+            }
+        });
+    });
 });
 </script>
 
