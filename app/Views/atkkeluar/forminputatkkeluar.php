@@ -214,12 +214,14 @@ function simpanitem(){
     let nama_barang = $('#nama_barang').val();
     let harga_keluar = $('#harga_keluar').val();
     let jumlah = $('#jumlah').val();
+    let nik = $('#nik').val();
+
     
-    if(sj.length == 0 || kode_barang == 0 || harga_keluar == 0 || jumlah == 0){
+    if(sj.length == 0 || kode_barang == 0 || harga_keluar == 0 || jumlah == 0 || nik.length == 0){
         swal({
             icon: "error",
             title: "Error",
-            text: 'Maaf sj/kode barang/harga beli/jumlah tidak boleh kosong',
+            text: 'Maaf ada data yang masih kosong',
             button: {
                 text: "OK",
                 className: "btn btn-primary waves-effect"
