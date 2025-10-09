@@ -69,6 +69,7 @@ $routes->match(['get','post'], 'atkmasuk/simpandetailsj', 'AtkMasuk::simpandetai
 $routes->match(['get','post'], 'atkmasuk/updateitemsj', 'AtkMasuk::updateitemsj');
 $routes->match(['get','post'], 'atkmasuk/hapusitemdetail', 'AtkMasuk::hapusitemdetail');
 $routes->match(['get','post'], 'atkmasuk/hapustransaksi', 'AtkMasuk::hapustransaksi');
+$routes->match(['get','post'], 'atkmasuk/updateTemp', 'AtkMasuk::updateTemp');
 
 //ATK KELUAR
 $routes->match(['get','post'], 'atkkeluar/data', 'AtkKeluar::data');
@@ -106,3 +107,4 @@ $routes->match(['get', 'post'],'karyawan/hapus', 'Karyawan::hapus');
 $routes->match(['get', 'post'],'laporan/data', 'laporan::index');
 $routes->match(['get', 'post'],'laporan/cetakatkmasuk', 'laporan::cetakatkmasuk');
 $routes->match(['get', 'post'],'laporan/cetakatkmasukperiode', 'laporan::cetakatkmasukperiode');
+$routes->match(['get', 'post'],'laporan/tampilgrafikatkmasuk', 'laporan::tampilgrafikatkmasuk');

@@ -28,7 +28,11 @@ class Auth extends BaseController
 
         if($user){
             if(password_verify($post['password'], $user->password)){
-                $params = ['id_user' => $user->id];
+                $params = [
+                    'id_user' => $user->id,
+                    'nama' => $user->nama_karyawan
+                ];
+
                 session()->set($params)
                 
                 ;

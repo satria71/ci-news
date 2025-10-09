@@ -39,4 +39,22 @@ class Laporan extends BaseController
 
         return view('laporan/cetaklaporanatkmasuk', $data);
     }
+
+    public function tampilgrafikatkmasuk(){
+        $bulan = $this->request->getPost('bulan');
+        $db      = \Config\Database::connect();
+
+        $query = $db->query("select tgl as tanggal, total_harga from atk_masuk where date_format(tgl,'%Y-%m')='$bulan' order by tgl asc")
+        ->getResult();
+
+        $data = [
+            'grafik' => $query
+        ];
+
+        $json = [
+            'data' => view('laporan/grafikatkmasuk', $data)
+        ];
+
+        echo json_encode($json);
+    }
 }

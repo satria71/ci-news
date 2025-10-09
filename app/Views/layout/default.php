@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?=base_url()?>/template/node_modules/chart.js/dist/Chart.min.css">
   
 
 
@@ -50,11 +51,13 @@
         <ul class="navbar-nav navbar-right">
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
             <img alt="image" src="<?=base_url()?>/template/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block">Hi, User</div></a>
+            <div class="d-sm-none d-lg-inline-block">
+              <?= session()->get('nama'); ?>
+            </div></a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title">Logged in 5 min ago</div>
               <a href="features-profile.html" class="dropdown-item has-icon">
-                <i class="far fa-user"></i> Profile
+                <i class="far fa-user"></i> Profiles
               </a>
               <a href="features-activities.html" class="dropdown-item has-icon">
                 <i class="fas fa-bolt"></i> Activities
@@ -115,6 +118,7 @@
   <script src="<?=base_url()?>/template/assets/js/stisla.js"></script>
   <script src="<?=base_url()?>/template/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
   <script src="<?=base_url()?>/template/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="<?=base_url()?>/template/node_modules/chart.js/dist/Chart.bundle.min.js"></script>
   
   <!-- Template JS File -->
   <script src="<?=base_url()?>/template/assets/js/scripts.js"></script>

@@ -193,8 +193,67 @@
                     },
                     dataType: "json",
                     success: function (response) {
+                        if(response.duplikat){
+                            // Jika data sudah ada → tampilkan konfirmasi
+                            swal({
+                                title: "Data Sudah Ada",
+                                text: response.pesan,
+                                icon: "warning",
+                                buttons: {
+                                    cancel: {
+                                        text: "Batal",
+                                        visible: true,
+                                        className: "btn btn-danger"
+                                    },
+                                    confirm: {
+                                        text: "Update Data",
+                                        visible: true,
+                                        className: "btn btn-primary"
+                                    }
+                                }
+                            }).then((willUpdate) => {
+                                if (willUpdate) {
+                                    // Kirim request update
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/atkmasuk/updateTemp",
+                                        data: {
+                                            sj: sj,
+                                            kode_barang: kode_barang,
+                                            harga: harga,
+                                            harga_beli: harga_beli,
+                                            jumlah: jumlah
+                                        },
+                                        dataType: "json",
+                                        success: function (res) {
+                                            swal({
+                                                icon: "success",
+                                                title: "Berhasil",
+                                                text: res.sukses,
+                                                button: {
+                                                    text: "OK",
+                                                    className: "btn btn-primary"
+                                                }
+                                            });
+                                            datatemp();
+                                            kosong();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+
                         if(response.sukses){
-                            alert(response.sukses);
+                            // Jika data baru berhasil ditambahkan
+                            swal({
+                                icon: "success",
+                                title: "Berhasil",
+                                text: response.sukses,
+                                button: {
+                                    text: "OK",
+                                    className: "btn btn-primary"
+                                }
+                            });
                             datatemp();
                             kosong();
                         }

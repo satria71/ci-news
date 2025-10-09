@@ -93,26 +93,80 @@ class AtkMasuk extends BaseController
             $harga_beli = $this->request->getPost('harga_beli');
             $jumlah = $this->request->getPost('jumlah');
 
-            $data = [
+            //cek data atk temp
+            $cek = $builder->where('det_sj', $sj)
+                       ->where('det_kode_barang', $kode_barang)
+                       ->get()
+                       ->getRow();
+
+            if($cek){
+                // $builder->where('det_sj', $sj)
+                //     ->where('det_kode_barang', $kode_barang)
+                //     ->update([
+                //         'det_harga' => $harga,
+                //         'det_harga_masuk' => $harga_beli,
+                //         'det_jumlah' => $jumlah,
+                //         'det_subtotal' => intval($jumlah) * intval($harga_beli)
+                //     ]);
+
+                // $json = [
+                //     'sukses' => 'Data berhasil diperbarui'
+                // ];
+                $json = [
+                    'duplikat' => true,
+                    'pesan' => 'Data barang sudah ada di daftar sementara. Apakah ingin diperbarui dengan data baru?'
+                ];
+            }else{
+                $data = [
                 'det_sj' => $sj,
                 'det_kode_barang' => $kode_barang,
                 'det_harga' => $harga,
                 'det_harga_masuk' => $harga_beli,
                 'det_jumlah' => $jumlah,
                 'det_subtotal' => intval($jumlah) * intval($harga_beli)
-            ];
+                ];
 
-            $builder->insert($data);
+                $builder->insert($data);
 
-            // var_dump($this->request->getPost());
+                // var_dump($this->request->getPost());
 
-            $json = [
-                'sukses' => 'Item berhasil ditambahkan'
-            ];
-
+                $json = [
+                    'sukses' => 'Item berhasil ditambahkan'
+                ];
+            }
             echo json_encode($json);
         }else{
             exit('maaf data tidak dipanggil');
+        }
+    }
+
+    public function updateTemp()
+    {
+        if ($this->request->isAJAX()) {
+            $db = \Config\Database::connect();
+            $builder = $db->table('temp_atk_masuk');
+
+            $sj           = $this->request->getPost('sj');
+            $kode_barang  = $this->request->getPost('kode_barang');
+            $harga        = $this->request->getPost('harga');
+            $harga_beli   = $this->request->getPost('harga_beli');
+            $jumlah       = $this->request->getPost('jumlah');
+            $subtotal     = intval($jumlah) * intval($harga_beli);
+
+            $builder->where('det_sj', $sj)
+                    ->where('det_kode_barang', $kode_barang)
+                    ->update([
+                        'det_harga' => $harga,
+                        'det_harga_masuk' => $harga_beli,
+                        'det_jumlah' => $jumlah,
+                        'det_subtotal' => $subtotal
+                    ]);
+
+            $json = [
+                'sukses' => 'Data berhasil diperbarui.'
+            ];
+
+            echo json_encode($json);
         }
     }
 

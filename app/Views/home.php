@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-info">
@@ -120,185 +120,93 @@
                         </div>
                     </div>
                 </div>
+            </div> -->
+
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Line Chart ATK Masuk</h4>
+                  </div>
+                  <!-- <div class="card-body" viewtampilgrafik> -->
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="bulan">Pilih Bulan</label>
+                      <div class="input-group">
+                        <input 
+                          type="month"
+                          id="bulan" 
+                          class="form-control" 
+                          value="<?= date('Y-m') ?>"
+                          required
+                        >
+                        <button type="button" class="btn btn-primary btn-sm" id="tomboltampil">
+                          <i class="fas fa-search"></i> Tampilkan
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="viewtampilgrafik">
+                      <div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor">
+                        <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                          <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0">
+
+                          </div>
+                        </div>
+                        <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                          <div style="position:absolute;width:200%;height:200%;left:0; top:0">
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <div>
+                </div>
+              </div>
+              <!-- <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Bar Chart</h4>
+                  </div>
+                  <div class="card-body"><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <canvas id="myChart2" style="display: block; width: 463px; height: 231px;" width="463" height="231" class="chartjs-render-monitor"></canvas>
+                  </div>
+                </div>
+              </div> -->
             </div>
-
-            <!-- <div class="row">
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Real Time Chart Suhu Coolroom</h4>
-                            <div class="card-header-action">
-                                <div class="btn-group">
-                                <a href="#" class="btn btn-primary">Week</a>
-                                <a href="#" class="btn">Month</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="ChartSuhu"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Real Time Chart Kelembapan Coolroom</h4>
-                            <div class="card-header-action">
-                                <div class="btn-group">
-                                <a href="#" class="btn btn-primary">Week</a>
-                                <a href="#" class="btn">Month</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="ChartKelembapan"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- <div class="row">
-              <div class="col-12 col-sm-12 col-lg-4">
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Summary Container</h4>
-                  </div>
-                  <div class="card-body">
-                    <div class="summary">
-                      <div class="summary-item">
-                        <ul class="list-unstyled list-unstyled-border">
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../../public/template/assets/img/products/product-4-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Container Baik</a></div>
-                              <div class="text-small text-muted">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?> </div>
-                            </div>
-                          </li>
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-1-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Container Rusak</a></div>
-                              <div class="text-small text-muted">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?> </div>
-                            </div>
-                          </li>
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-2-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Total Container</a></div>
-                              <div class="text-muted text-small">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-12 col-sm-12 col-lg-4">
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Summary Bronjong</h4>
-                  </div>
-                  <div class="card-body">
-                    <div class="summary">
-                      <div class="summary-item">
-                        <ul class="list-unstyled list-unstyled-border">
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-4-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Bronjong Baik</a></div>
-                              <div class="text-small text-muted">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?></div>
-                            </div>
-                          </li>
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-1-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Bronjong Rusak</a></div>
-                              <div class="text-small text-muted">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?></div>
-                            </div>
-                          </li>
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-2-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Total Bronjong</a></div>
-                              <div class="text-muted text-small">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-12 col-sm-12 col-lg-4">
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Summary Dollies</h4>
-                  </div>
-                  <div class="card-body">
-                    <div class="summary">
-                      <div class="summary-item">
-                        <ul class="list-unstyled list-unstyled-border">
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-4-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Dollies Baik</a></div>
-                              <div class="text-small text-muted">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?></div>
-                            </div>
-                          </li>
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-1-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Dollies Rusak</a></div>
-                              <div class="text-small text-muted">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?></div>
-                            </div>
-                          </li>
-                          <li class="media">
-                            <a href="#">
-                              <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-2-50.png">
-                            </a>
-                            <div class="media-body">
-                              <div class="media-right">-</div>
-                              <div class="media-title"><a href="#">Total Dollies</a></div>
-                              <div class="text-muted text-small">by <a href="#">DC Malang</a> <div class="bullet"></div> <?php echo date("l");?>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
         </div>
     </section>
+
+<script>
+function tampilgrafik(){
+  $.ajax({
+    type: "post",
+    url: "laporan/tampilgrafikatkmasuk",
+    data: {
+      bulan : $('#bulan').val()
+    },
+    dataType: "json",
+    beforeSend:function(){
+      $('.viewtampilgrafik').html('<i class="fas fa-spinner"></i>');
+    },
+    success: function (response) {
+      if(response.data){
+        $('.viewtampilgrafik').html(response.data);
+      }
+    },
+    error: function(xhr,ajaxOptions,thrownError){
+        alert(xhr.status+'\n'+thrownError);
+    }
+  });
+}
+
+$(document).ready(function () {
+  tampilgrafik();
+
+  $('#tomboltampil').click(function (e) { 
+    e.preventDefault();
+    tampilgrafik();
+  });
+});
+</script>
 <?= $this->endSection()?>
