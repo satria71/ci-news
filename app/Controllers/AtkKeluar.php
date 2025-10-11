@@ -154,13 +154,17 @@ class AtkKeluar extends BaseController
 
             $db      = \Config\Database::connect();
             $builder = $db->table('master_atk'); 
-            $query = $builder->where('kode_barang', $kode_barang)->get();
+            $query = $builder->where('kode_barang', $kode_barang)
+                            ->orWhere('barcode', $kode_barang)
+                            ->get();
             $ambildata = $query->getRow();
+            
             
             if($ambildata == NULL){
                 $json = [
-                    'error' => 'Data Barang Tidak Ditemukan...'
+                    'error' => 'Kode Barang atau Barcode Tidak Ditemukan...'
                 ];
+            
             }else{
                 $data = [
                     'nama_barang' => $ambildata->nama_barang,
@@ -456,8 +460,17 @@ class AtkKeluar extends BaseController
 
         // ===================== BASE QUERY =====================
         $builder = $db->table($table);
-        $builder->select('a.no_sj, a.tgl, a.total_harga, k.nik, k.nama_karyawan, k.bagian');
+        $builder->select('
+                a.no_sj, 
+                a.tgl, 
+                a.total_harga, 
+                k.nik, 
+                k.nama_karyawan, 
+                k.bagian,
+                COUNT(d.det_sj) AS jumlah_item
+        ');
         $builder->join('karyawan k', 'k.nik = a.nik', 'left');
+        $builder->join('detail_atk_keluar d', 'd.det_sj = a.no_sj', 'left');
         
         // -------- Filter tanggal (jika ada) --------
         if (!empty($tglawal) && !empty($tglakhir)) {
@@ -476,6 +489,9 @@ class AtkKeluar extends BaseController
             }
             $builder->groupEnd();
         }
+
+        // ✅ Tambahkan GROUP BY supaya count-nya per surat jalan
+        $builder->groupBy('a.no_sj');
 
         // -------- Order --------
         $orderPost = $request->getPost('order');
@@ -524,6 +540,7 @@ class AtkKeluar extends BaseController
         $no   = $start;
         foreach ($lists as $list) {
             $no++;
+            $tglFormatted = date('d/m/Y', strtotime($list->tgl));
             $row   = [];
             $tombolcetak = "<button type=\"button\" class=\"btn btn-sm btn-info\" onclick=\"cetak('".$list->no_sj."')\">
             <i class=\"fas fa-print\"></i></button>";
@@ -532,11 +549,12 @@ class AtkKeluar extends BaseController
             $tombolhapus = "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"hapus('".$list->no_sj."')\">
             <i class=\"fas fa-trash-alt\"></i></button>";
             
-            $row[] = $no;             // contoh nomor urut
-            $row[] = $list->no_sj;             // contoh nomor urut
-            $row[] = $list->tgl;     // contoh kolom
+            $row[] = $no;            
+            $row[] = $list->no_sj;             
+            $row[] = $tglFormatted;     
             $row[] = $list->nama_karyawan;
             $row[] = $list->bagian;
+            $row[] = $list->jumlah_item;
             $row[] = number_format($list->total_harga,0,',','.');
             $row[] = $tombolcetak . " " . $tomboledit . " " . $tombolhapus;
             // tambahkan kolom lain sesuai kebutuhan

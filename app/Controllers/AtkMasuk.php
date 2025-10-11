@@ -58,12 +58,14 @@ class AtkMasuk extends BaseController
 
             $db      = \Config\Database::connect();
             $builder = $db->table('master_atk'); 
-            $query = $builder->where('kode_barang', $kode_barang)->get();
+            $query = $builder->where('kode_barang', $kode_barang)
+                            ->orWhere('barcode', $kode_barang)
+                            ->get();
             $ambildata = $query->getRow();
             
             if($ambildata == NULL){
                 $json = [
-                    'error' => 'Data Barang Tidak Ditemukan...'
+                    'error' => 'Kode Barang atau Barcode Tidak Ditemukan...'
                 ];
             }else{
                 $data = [

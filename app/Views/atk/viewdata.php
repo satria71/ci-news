@@ -81,8 +81,6 @@ function edittransaksi(no_sj){
     window.location.href = ('/atkmasuk/edittransaksi/') + no_sj;
 }
 
-
-
 $(document).ready(function () {
     let dtIn = $("#tbtransaksiatk").DataTable({
         ajax: {

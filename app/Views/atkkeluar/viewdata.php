@@ -45,6 +45,7 @@
                                 <th>Tanggal</th>
                                 <th>Nama Karyawan</th>
                                 <th>Bagian</th>
+                                <th>Jumlah Item</th>
                                 <th>Total Harga (Rp)</th>
                                 <th>Action</th>
                             </tr>
