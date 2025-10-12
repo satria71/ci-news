@@ -491,7 +491,15 @@ class AtkKeluar extends BaseController
         }
 
         // ✅ Tambahkan GROUP BY supaya count-nya per surat jalan
-        $builder->groupBy('a.no_sj');
+        // $builder->groupBy('a.no_sj');
+        $builder->groupBy([
+            'a.no_sj',
+            'a.tgl',
+            'a.total_harga',
+            'k.nik',
+            'k.nama_karyawan',
+            'k.bagian'
+        ]);
 
         // -------- Order --------
         $orderPost = $request->getPost('order');
