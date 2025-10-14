@@ -95,6 +95,7 @@ $routes->match(['get', 'post'],'atkkeluar/hapusitemdetail', 'AtkKeluar::hapusite
 $routes->match(['get', 'post'],'atkkeluar/edititem', 'AtkKeluar::edititem');
 $routes->match(['get', 'post'],'atkkeluar/updateitemsj', 'AtkKeluar::updateitemsj');
 $routes->match(['get', 'post'],'atkkeluar/simpandetail', 'AtkKeluar::simpandetail');
+$routes->match(['get', 'post'],'atkkeluar/detailitemkeluar', 'AtkKeluar::detailitemkeluar');
 
 //KARYAWAN
 $routes->match(['get', 'post'],'karyawan/formtambah', 'Karyawan::formtambah');
@@ -108,3 +109,4 @@ $routes->match(['get', 'post'],'laporan/data', 'Laporan::index');
 $routes->match(['get', 'post'],'laporan/cetakatkmasuk', 'Laporan::cetakatkmasuk');
 $routes->match(['get', 'post'],'laporan/cetakatkmasukperiode', 'Laporan::cetakatkmasukperiode');
 $routes->match(['get', 'post'],'laporan/tampilgrafikatkmasuk', 'Laporan::tampilgrafikatkmasuk');
+$routes->match(['get', 'post'],'laporan/tampilgrafikatkkeluar', 'Laporan::tampilgrafikatkkeluar');

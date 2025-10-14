@@ -58,7 +58,28 @@
             </div>
         </div>        
     </section>
+    <div class="viewmodal" style="display: none;"></div>
 <script>
+function detailitemkeluar(no_sj){
+    $.ajax({
+        type: "post",
+        url: "/atkkeluar/detailitemkeluar",
+        data: {
+            no_sj : no_sj
+        },
+        dataType: "json",
+        success: function (response) {
+            if(response.data){
+                $('.viewmodal').html(response.data).show();
+                $('#modalitem').modal('show');
+            }
+        },
+        error: function(xhr,ajaxOptions,thrownError){
+            alert(xhr.status+'\n'+thrownError);
+        }
+    });
+}
+
 function listdataatkkeluar(){
     var table = $('#dataatkkeluar').DataTable({
         destroy : true,

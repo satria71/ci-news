@@ -57,4 +57,22 @@ class Laporan extends BaseController
 
         echo json_encode($json);
     }
+
+    public function tampilgrafikatkkeluar(){
+        $bulan = $this->request->getPost('bulan');
+        $db      = \Config\Database::connect();
+
+        $query = $db->query("select tgl as tanggal, total_harga from atk_keluar where date_format(tgl,'%Y-%m')='$bulan' order by tgl asc")
+        ->getResult();
+
+        $data = [
+            'grafik' => $query
+        ];
+
+        $json = [
+            'data' => view('laporan/grafikatkkeluar', $data)
+        ];
+
+        echo json_encode($json);
+    }
 }

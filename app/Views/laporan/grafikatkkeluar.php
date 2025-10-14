@@ -1,4 +1,4 @@
-<canvas id="myChart" style="display: block; width: 463px; height: 231px;" width="463" height="300" class="chartjs-render-monitor">
+<canvas id="myChart2" style="display: block; width: 463px; height: 231px;" width="463" height="300" class="chartjs-render-monitor">
 </canvas>
 <?php
     $tanggal = "";
@@ -14,7 +14,7 @@
 ?>
 
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
+    var ctx = document.getElementById('myChart2').getContext('2d');
 
     function formatRupiah(angka){
         return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -43,7 +43,7 @@
             },
             title: {
                 display: true,
-                text: 'Grafik ATK Masuk per Tanggal',
+                text: 'Grafik ATK Keluar per Tanggal',
                 fontSize: 18,
                 fontColor: '#111'
             },

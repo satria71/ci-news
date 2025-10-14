@@ -550,11 +550,13 @@ class AtkKeluar extends BaseController
             $no++;
             $tglFormatted = date('d/m/Y', strtotime($list->tgl));
             $row   = [];
-            $tombolcetak = "<button type=\"button\" class=\"btn btn-sm btn-info\" onclick=\"cetak('".$list->no_sj."')\">
+            $tombolcetak = "<button type=\"button\" title=\"reprint\" class=\"btn btn-sm btn-info\" onclick=\"cetak('".$list->no_sj."')\">
             <i class=\"fas fa-print\"></i></button>";
-            $tomboledit = "<button type=\"button\" class=\"btn btn-sm btn-warning\" onclick=\"edit('".$list->no_sj."')\">
+            $tombolinfo = "<button type=\"button\" title=\"detail data\" class=\"btn btn-sm btn-success\" onclick=\"detailitemkeluar('".$list->no_sj."')\">
+            <i class=\"fas fa-info\"></i></button>";
+            $tomboledit = "<button type=\"button\" title=\"edit data\" class=\"btn btn-sm btn-warning\" onclick=\"edit('".$list->no_sj."')\">
             <i class=\"fas fa-edit\"></i></button>";
-            $tombolhapus = "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"hapus('".$list->no_sj."')\">
+            $tombolhapus = "<button type=\"button\" title=\"hapus data\" class=\"btn btn-sm btn-danger\" onclick=\"hapus('".$list->no_sj."')\">
             <i class=\"fas fa-trash-alt\"></i></button>";
             
             $row[] = $no;            
@@ -564,7 +566,7 @@ class AtkKeluar extends BaseController
             $row[] = $list->bagian;
             $row[] = $list->jumlah_item;
             $row[] = number_format($list->total_harga,0,',','.');
-            $row[] = $tombolcetak . " " . $tomboledit . " " . $tombolhapus;
+            $row[] = $tombolcetak . " " . $tombolinfo . " " . $tomboledit . " " . $tombolhapus;
             // tambahkan kolom lain sesuai kebutuhan
             $data[] = $row;
         }
@@ -578,6 +580,47 @@ class AtkKeluar extends BaseController
 
         return $this->response->setJSON($output);
     }   
+
+    public function datadetailinfo($no_sj){
+        $db      = \Config\Database::connect();
+        $builder = $db->table('detail_atk_keluar d');
+        $builder->select(
+            'm.kode_barang,
+             d.id,
+             d.det_sj,
+             m.nama_barang,
+             m.harga,
+             d.det_kode_barang,
+             d.det_harga_keluar,
+             d.det_jumlah,
+             d.det_subtotal')
+        ->join('master_atk m', 'd.det_kode_barang = m.kode_barang', 'left')   // join manual
+        ->where('d.det_sj', $no_sj);
+
+        $query = $builder->get();
+        $data = $query->getResultArray();
+        return ($data);
+    }
+
+    public function detailitemkeluar(){
+        if($this->request->isAJAX()){
+            $sjkeluar = $this->request->getPost('no_sj');
+
+            $datadetail = $this->datadetailinfo($sjkeluar);
+
+            $data = [
+                'tampildatadetail' => $datadetail
+            ];
+
+            $json = [
+                'data' => view('atkkeluar/modaldetailitemkeluar', $data)
+            ];
+
+            echo json_encode($json);
+        }else{
+            exit('maaf data tidak dipanggil');
+        }
+    }
 
     public function hapustransaksi(){
         if($this->request->isAJAX()){
