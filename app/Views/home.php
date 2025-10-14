@@ -126,9 +126,6 @@
               <!-- Chart ATK Masuk -->
               <div class="col-lg-6">
                 <div class="card">
-                  <div class="card-header">
-                    <h4>Line Chart ATK Masuk</h4>
-                  </div>
                   <div class="card-body">
                     <div class="form-group">
                       <label for="bulan">Pilih Bulan</label>
@@ -153,9 +150,6 @@
               <!-- Chart ATK Keluar -->
               <div class="col-lg-6">
                 <div class="card">
-                  <div class="card-header">
-                    <h4>Line Chart ATK Keluar</h4>
-                  </div>
                   <div class="card-body">
                     <div class="form-group">
                         <label for="bulan">Pilih Bulan</label>
