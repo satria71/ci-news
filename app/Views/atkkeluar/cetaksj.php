@@ -67,7 +67,7 @@
         <tr style="font-weight: bold;">
             <td style="width:20px;">No.</td>
             <td>Kode Barang</td>
-            <td>Nama Barang</td>
+            <td style="text-align:left;">Nama Barang</td>
             <td>QTY</td>
             <td>Satuan</td>
             <td>Harga</td>
@@ -89,7 +89,7 @@
         <tr>
             <td><?= $no ?></td>
             <td><?= $row['det_kode_barang']; ?></td>
-            <td><?= $row['nama_barang']; ?></td>
+            <td style="text-align:left;"><?= $row['nama_barang']; ?></td>
             <td><?= number_format($row['det_jumlah'],0,",","."); ?></td>
             <td><?= $row['satuan'] ?></td>
             <td style="text-align:right;"><?= number_format($row['det_harga_keluar'],0,",",".");?></td>

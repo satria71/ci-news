@@ -62,8 +62,15 @@ class Laporan extends BaseController
         $bulan = $this->request->getPost('bulan');
         $db      = \Config\Database::connect();
 
-        $query = $db->query("select tgl as tanggal, total_harga from atk_keluar where date_format(tgl,'%Y-%m')='$bulan' order by tgl asc")
-        ->getResult();
+        $query = $db->query("
+                    select 
+                        date(tgl) as tanggal, 
+                        sum(total_harga) as total_harga 
+                    from atk_keluar 
+                    where date_format(tgl,'%Y-%m')='$bulan' 
+                    group by date(tgl) 
+                    order by date(tgl) asc
+        ")->getResult();
 
         $data = [
             'grafik' => $query

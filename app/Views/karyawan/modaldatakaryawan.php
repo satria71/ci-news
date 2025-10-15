@@ -56,6 +56,7 @@ function pilih(id,nik,nama,bagian){
     $('#bagian').val(bagian);
 
     $('#modaldatakaryawan').modal('hide');
+    $('#kode_barang').focus();
 }
 
 function hapus(id, nik, nama, bagian){

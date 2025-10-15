@@ -17,13 +17,13 @@
 <li class="nav-item dropdown">
 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-ticket-alt"></i> <span>Voucher</span></a>
     <ul class="dropdown-menu">
-        <li><a class="nav-link" href="<?= site_url('voucher')?>">Master Voucher</a></li>
-        <li><a class="nav-link" href="<?= site_url('AktivaSupport/datang')?>">Temuan Voucher</a></li>
+        <li><a class="nav-link" href="<?= site_url('#')?>">Master Voucher</a></li>
+        <li><a class="nav-link" href="<?= site_url('#')?>">Temuan Voucher</a></li>
         <li><a class="nav-link" href="">Cek Laporan</a></li>
     </ul>
 </li>
 
-<li class="nav-item dropdown">
+<!-- <li class="nav-item dropdown">
 <a href="#" class="nav-link has-dropdown"><i class="fas fa-business-time"></i><span>Lembur</span></a>
     <ul class="dropdown-menu">
         <li><a class="nav-link" href="">Master Karyawan</a></li>
@@ -49,7 +49,7 @@
         <li><a class="nav-link" href="">Input TAG</a></li>
         <li><a class="nav-link" href="">Cetak Laporan</a></li>
     </ul>
-</li>
+</li> -->
 
 <li class="nav-item dropdown">
 <a href="#" class="nav-link has-dropdown"><i class="fas fa-plug"></i><span>Support</span></a>
