@@ -81,7 +81,7 @@
                     <td><?= $no++; ?></td>
                     <td><?= $row['no_sj']; ?></td>
                     <td><?= date('d M Y', strtotime($row['tgl'])); ?></td>
-                    <td><?= $row['jumlah_karyawan']; ?></td>
+                    <td><?= $row['total_item']; ?></td>
                     <td><?= number_format($row['total_harga'],0,",","."); ?></td>
                 </tr>
 

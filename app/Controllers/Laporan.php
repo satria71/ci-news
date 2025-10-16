@@ -49,12 +49,11 @@ class Laporan extends BaseController
             $db      = \Config\Database::connect();
             $atkkeluar = $db->table('atk_keluar k');
             // $data = $atkmasuk->where('tgl >=', $tglawal)->where('tgl <=', $tglakhir)->get();
-            $data = $atkkeluar->select("
+            $atkkeluar->select("
                     k.no_sj,
                     k.tgl,
                     k.total_harga,
-                    COUNT(DISTINCT k.nik) AS jumlah_karyawan,
-                    SUM(d.det_jumlah) AS total_item
+                    COUNT(DISTINCT d.det_sj) AS total_item,
                 ");
                 $atkkeluar->join('detail_atk_keluar d', 'd.det_sj = k.no_sj', 'left');
                 $atkkeluar->where('k.tgl >=', $tglawal);
@@ -62,7 +61,7 @@ class Laporan extends BaseController
                 $atkkeluar->groupBy('k.no_sj'); // Grup per surat jalan
                 $atkkeluar->orderBy('k.tgl', 'ASC');
 
-                $hasil = $data->get()->getResultArray();
+                $hasil = $atkkeluar->get()->getResultArray();
             return $hasil;
     }
 
