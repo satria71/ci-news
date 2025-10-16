@@ -10,7 +10,7 @@
             <div class="section-header-back">
                 <a href="<?=site_url('/laporan/data')?>" class="btn"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Cetak Laporan ATK Masuk</h1>
+            <h1>Cetak Laporan ATK Keluar</h1>
         </div>
         <div class="section-body">
             <div class="card">
@@ -25,7 +25,7 @@
                                 <div class="card-header">Pilih Periode</div>
                                 <div class="card-body bg-white">
                                     <p class="card-text">
-                                        <?= form_open('laporan/cetakatkmasukperiode',['target' => '_blank']) ?>
+                                        <?= form_open('laporan/cetakatkkeluarperiode',['target' => '_blank']) ?>
                                         <div class="form-group">
                                             <label for="">Tanggal Awal</label>
                                             <input type="date" name="tglawal" class="form-control" required>

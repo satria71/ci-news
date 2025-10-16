@@ -25,7 +25,8 @@
                             <i class="fas fa-file"></i> Cetak Laporan ATK Masuk
                         </div>
                         <div class="col-md-4">
-                            
+                            <button type="button" class="btn btn-success btn-block btn-lg" onclick="window.location=('/laporan/cetakatkkeluar')">
+                            <i class="fas fa-file"></i> Cetak Laporan ATK Keluar
                         </div>
                         <div class="col-md-4">
                             

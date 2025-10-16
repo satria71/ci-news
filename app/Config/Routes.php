@@ -107,6 +107,8 @@ $routes->match(['get', 'post'],'karyawan/hapus', 'Karyawan::hapus');
 //LAPORAN
 $routes->match(['get', 'post'],'laporan/data', 'Laporan::index');
 $routes->match(['get', 'post'],'laporan/cetakatkmasuk', 'Laporan::cetakatkmasuk');
+$routes->match(['get', 'post'],'laporan/cetakatkkeluar', 'Laporan::cetakatkkeluar');
 $routes->match(['get', 'post'],'laporan/cetakatkmasukperiode', 'Laporan::cetakatkmasukperiode');
+$routes->match(['get', 'post'],'laporan/cetakatkkeluarperiode', 'Laporan::cetakatkkeluarperiode');
 $routes->match(['get', 'post'],'laporan/tampilgrafikatkmasuk', 'Laporan::tampilgrafikatkmasuk');
 $routes->match(['get', 'post'],'laporan/tampilgrafikatkkeluar', 'Laporan::tampilgrafikatkkeluar');

@@ -33,7 +33,7 @@
             <td style="padding:1px;">
             </td>
             <td style="padding:1px;">
-                <h3 style="margin:0;">Laporan ATK Masuk</h3>
+                <h3 style="margin:0;">Laporan ATK Keluar</h3>
             </td>
         </tr>
 
@@ -74,13 +74,14 @@
                 <?php 
                 $no = 1;
                 $totalseluruhharga = 0;
-                foreach($datalaporan->getResultArray() as $row) : 
+                foreach($datalaporan as $row) : 
                     $totalseluruhharga += $row['total_harga'];
                 ?>
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $row['no_sj']; ?></td>
-                    <td><?= $row['tgl']; ?></td>
+                    <td><?= date('d M Y', strtotime($row['tgl'])); ?></td>
+                    <td><?= $row['jumlah_karyawan']; ?></td>
                     <td><?= number_format($row['total_harga'],0,",","."); ?></td>
                 </tr>
 
@@ -88,7 +89,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="3">Total seluruh harga</th>
+                    <th colspan="4">Total seluruh harga</th>
                     <td><?= number_format($totalseluruhharga,0,",","."); ?></td>
                 </tr>
             </tfoot>

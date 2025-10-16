@@ -17,7 +17,12 @@ class Laporan extends BaseController
         return view('laporan/viewatkmasuk');
     }
 
-    public function laporanperperiode($tglawal, $tglakhir){
+    public function cetakatkkeluar()
+    {
+        return view('laporan/viewatkkeluar');
+    }
+
+    public function laporanperperiodemasuk($tglawal, $tglakhir){
             $db      = \Config\Database::connect();
             $atkmasuk = $db->table('atk_masuk');
             $data = $atkmasuk->where('tgl >=', $tglawal)->where('tgl <=', $tglakhir)->get();
@@ -29,7 +34,7 @@ class Laporan extends BaseController
         $tglawal = $this->request->getPost('tglawal');
         $tglakhir = $this->request->getPost('tglakhir');
 
-        $datalaporan = $this->laporanperperiode($tglawal, $tglakhir);
+        $datalaporan = $this->laporanperperiodemasuk($tglawal, $tglakhir);
 
         $data = [
             'datalaporan' => $datalaporan,
@@ -38,6 +43,43 @@ class Laporan extends BaseController
         ];
 
         return view('laporan/cetaklaporanatkmasuk', $data);
+    }
+
+    public function laporanperperiodekeluar($tglawal, $tglakhir){
+            $db      = \Config\Database::connect();
+            $atkkeluar = $db->table('atk_keluar k');
+            // $data = $atkmasuk->where('tgl >=', $tglawal)->where('tgl <=', $tglakhir)->get();
+            $data = $atkkeluar->select("
+                    k.no_sj,
+                    k.tgl,
+                    k.total_harga,
+                    COUNT(DISTINCT k.nik) AS jumlah_karyawan,
+                    SUM(d.det_jumlah) AS total_item
+                ");
+                $atkkeluar->join('detail_atk_keluar d', 'd.det_sj = k.no_sj', 'left');
+                $atkkeluar->where('k.tgl >=', $tglawal);
+                $atkkeluar->where('k.tgl <=', $tglakhir);
+                $atkkeluar->groupBy('k.no_sj'); // Grup per surat jalan
+                $atkkeluar->orderBy('k.tgl', 'ASC');
+
+                $hasil = $data->get()->getResultArray();
+            return $hasil;
+    }
+
+    public function cetakatkkeluarperiode()
+    {
+        $tglawal = $this->request->getPost('tglawal');
+        $tglakhir = $this->request->getPost('tglakhir');
+
+        $datalaporan = $this->laporanperperiodekeluar($tglawal, $tglakhir);
+
+        $data = [
+            'datalaporan' => $datalaporan,
+            'tglawal' => $tglawal,
+            'tglakhir' => $tglakhir,
+        ];
+
+        return view('laporan/cetaklaporanatkkeluar', $data);
     }
 
     public function tampilgrafikatkmasuk(){
