@@ -17,6 +17,7 @@
     var ctx = document.getElementById('myChart2').getContext('2d');
 
     function formatRupiah(angka){
+        if (!angka && angka !== 0) return '';
         return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
@@ -58,12 +59,15 @@
             scales: {
                 yAxes: [{
                     gridLines: {
-                    drawBorder: false,
-                    color: '#f2f2f2',
+                        drawBorder: false,
+                        color: '#f2f2f2',
                     },
                     ticks: {
-                    beginAtZero: true,
-                    stepSize: 1000
+                        beginAtZero: true,
+                        stepSize: 1000,
+                        callback: function(value, index, values) {
+                            return formatRupiah(value); // tampilkan dengan format Rp dan titik
+                        }
                     }
                 }],
                 xAxes: [{
@@ -81,6 +85,13 @@
                     }
                 }]
             },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return formatRupiah(tooltipItem.yLabel); // tooltip juga tampil format rupiah
+                    }
+                }
+            }
         }
     })
 </script>
