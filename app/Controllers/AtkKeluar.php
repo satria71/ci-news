@@ -114,13 +114,30 @@ class AtkKeluar extends BaseController
         return $builder->get()->getResultArray();
     }
 
+    public function ambilkodebarang(string $kode_barang): ?string
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('master_atk');
+        $builder->select('kode_barang')
+            ->groupStart()
+                ->where('kode_barang', $kode_barang)
+                ->orWhere('barcode', $kode_barang)
+            ->groupEnd();
+
+        $result = $builder->get()->getRowArray();
+        return $result ? $result['kode_barang'] : null;
+    }
+
     public function ambilstokbarang(string $kode_barang): int{
         $db      = \Config\Database::connect();
         $builder = $db->table('master_atk'); 
         $builder->select('stok')
         ->where('kode_barang',$kode_barang)
         ->orWhere('barcode', $kode_barang);
+
         $result = $builder->get()->getRowArray();
+
+    
 
         // log_message('debug', 'DEBUG tampildatatemp => ' . print_r(
         // $builder->getCompiledSelect(), true
@@ -193,25 +210,34 @@ class AtkKeluar extends BaseController
             $harga_keluar = $this->request->getPost('harga_keluar');
             $jumlah = $this->request->getPost('jumlah');
 
+            $datakode  = $this->ambilkodebarang($kode_barang);
+
             $data = [
                 'det_sj' => $sj,
-                'det_kode_barang' => $kode_barang,
+                'det_kode_barang' => $datakode,
                 'det_harga_keluar' => $harga_keluar,
                 'det_jumlah' => $jumlah,
                 'det_subtotal' => intval($jumlah) * intval($harga_keluar)
             ];
-
+            
             $stokbarang = $this->ambilstokbarang($kode_barang);
+
+            $debug = [
+            'kode_barang_input' => $kode_barang,
+            'stok_ditemukan' => $stokbarang
+            ];  
 
             if($jumlah > $stokbarang){
                 $json = [
-                    'error' => 'Stok tidak mencukupi'
+                    'error' => 'Stok tidak mencukupi',
+                    'debug' => $debug
                 ];
             }else{
                 $builder->insert($data);
 
                 $json = [
-                    'sukses' => 'Item berhasil ditambahkan'
+                    'sukses' => 'Item berhasil ditambahkan',
+                    'debug' => $debug
                 ];
             }
 

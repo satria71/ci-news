@@ -255,6 +255,8 @@ function simpanitem(){
                 if(response.sukses){
                     // alert(response.sukses);
                     tampildatatemp();
+                    // tampilkan debug di console
+                    console.log('DEBUG simpantemp:', response.debug);
                     kosong();
                 }
             },
