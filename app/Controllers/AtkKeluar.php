@@ -118,7 +118,8 @@ class AtkKeluar extends BaseController
         $db      = \Config\Database::connect();
         $builder = $db->table('master_atk'); 
         $builder->select('stok')
-        ->where('kode_barang',$kode_barang);
+        ->where('kode_barang',$kode_barang)
+        ->orWhere('barcode', $kode_barang);
         $result = $builder->get()->getRowArray();
 
         // log_message('debug', 'DEBUG tampildatatemp => ' . print_r(
