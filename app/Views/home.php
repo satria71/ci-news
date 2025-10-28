@@ -75,25 +75,25 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Stok Terbanyak</h4>
+                    <h4>5 Item Stok Terbanyak</h4>
                     <div class="card-header-action">
                       <a href="#" class="btn btn-danger">View More <i class="fas fa-chevron-right"></i></a>
                     </div>
                   </div>
                   <div class="card-body p-0">
                     <div class="table-responsive table-invoice">
-                      <table class="table table-striped">
+                      <table class="table table-bordered table-hover">
                         <thead>
                           <tr>
-                            <th>Kode Barang</th>
-                            <th>Desc</th>
-                            <th>Stok</th>
+                            <th>KODE BARANG</th>
+                            <th>DESC</th>
+                            <th>STOK</th>
                             <th>PKM</th>
-                            <th>Over</th>
-                            <th>Status</th>
+                            <th>OVER</th>
+                            <th style="text-align:center;">STATUS</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -105,7 +105,7 @@
                                 <td><?= number_format($row->stok, 0, ',', '.') ?></td>
                                 <td><?= number_format($row->pkm, 0, ',', '.') ?></td>
                                 <td><?= number_format($row->var, 0, ',', '.') ?></td>
-                                <td>
+                                <td style="text-align:center;">
                                   <?php if ($row->status == 'Over 2*pkm') : ?>
                                     <div class="badge badge-danger"><?= esc($row->status) ?></div>
                                   <?php elseif ($row->status == 'Over 1.5*pkm') : ?>
@@ -128,7 +128,32 @@
                 </div>
               </div>
 
-              <div class="col-md-6"></div>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Bagian Terbanyak</h4>
+                    <div class="card-header-action">
+                      <a href="#" class="btn btn-success">View More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive table-invoice">
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>BAGIAN</th>
+                            <th>TOTAL QTY</th>
+                            <th>RUPIAH</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- <div class="row">
