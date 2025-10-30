@@ -131,7 +131,7 @@
               <div class="col-md-4">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Bagian Terbanyak</h4>
+                    <h4>Bagian Terbanyak Pengeluaran</h4>
                     <div class="card-header-action">
                       <a href="#" class="btn btn-success">View More <i class="fas fa-chevron-right"></i></a>
                     </div>

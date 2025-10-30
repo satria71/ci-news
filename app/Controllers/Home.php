@@ -40,6 +40,7 @@ class Home extends BaseController
                 k.bagian
             ORDER BY 
                 total_rupiah DESC
+                LIMIT 5
         ")->getResult();
 
         $data = [
