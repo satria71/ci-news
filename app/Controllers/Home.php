@@ -26,36 +26,32 @@ class Home extends BaseController
             LIMIT 5
         ")->getResult();
 
-        $data = ['stokterbanyak' => $stokterbanyak];
+        //  ✅ Query tambahan — bagian dengan pengeluaran terbanyak
+        $databagian = $db->query("
+            SELECT 
+                k.bagian,
+                COUNT(a.nik) AS total_transaksi,
+                SUM(a.total_harga) AS total_rupiah
+            FROM 
+                atk_keluar a
+            JOIN 
+                karyawan k ON a.nik = k.nik
+            GROUP BY 
+                k.bagian
+            ORDER BY 
+                total_rupiah DESC
+        ")->getResult();
+
+        $data = [
+            'stokterbanyak' => $stokterbanyak,
+            'keluarbagian'   => $databagian
+        ];
+
         return view('home.php', $data);
     }
 
     public function generate()
     {
         echo password_hash('12345', PASSWORD_BCRYPT);
-    }
-
-    public function stokterbanyak(){
-        $db = Database::connect();
-
-        $stokterbanyak = $db->query("
-            SELECT 
-            kode_barang, 
-            nama_barang, 
-            stok, 
-            pkm,
-            CASE 
-                WHEN stok >= 2*pkm THEN 'Over 2*pkm'
-                WHEN stok >= 1.5*pkm THEN 'Over 1.5*pkm'
-                WHEN stok = pkm THEN 'Aman'
-                ELSE 'Kurang'
-            END AS status
-        FROM master_atk
-        ORDER BY stok DESC
-        LIMIT 5
-        ")->getResult();
-
-        $data = ['stokterbanyak' => $stokterbanyak];
-        return view('home', $data);
     }
 }

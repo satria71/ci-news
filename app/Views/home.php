@@ -142,12 +142,24 @@
                         <thead>
                           <tr>
                             <th>BAGIAN</th>
-                            <th>TOTAL QTY</th>
+                            <th>TOTAL TRX</th>
                             <th>RUPIAH</th>
                           </tr>
                         </thead>
                         <tbody>
-
+                          <?php if (!empty($keluarbagian)) : ?>
+                            <?php foreach ($keluarbagian as $row) : ?>
+                              <tr>
+                                <td><?= esc($row->bagian) ?></td>
+                                <td><?= number_format($row->total_transaksi, 0, ',', '.') ?></td>
+                                <td>Rp <?= number_format($row->total_rupiah, 0, ',', '.') ?></td>
+                              </tr>
+                            <?php endforeach; ?>
+                          <?php else : ?>
+                            <tr>
+                              <td colspan="3" class="text-center">Tidak ada data</td>
+                            </tr>
+                          <?php endif; ?>
                         </tbody>
                       </table>
                     </div>
