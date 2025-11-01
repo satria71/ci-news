@@ -71,7 +71,7 @@ class Laporan extends BaseController
             // $data = $atkmasuk->where('tgl >=', $tglawal)->where('tgl <=', $tglakhir)->get();
             $atkkeluar->select("
                     d.det_kode_barang AS kode_barang,
-                    ANY_VALUE(b.nama_barang) AS nama_barang,
+                    b.nama_barang,
                     SUM(d.det_jumlah) AS total_item,
                     SUM(d.det_subtotal) AS total_harga
                 ");
@@ -80,6 +80,7 @@ class Laporan extends BaseController
                 $atkkeluar->where('k.tgl >=', $tglawal);
                 $atkkeluar->where('k.tgl <=', $tglakhir);
                 $atkkeluar->groupBy('d.det_kode_barang');
+                $atkkeluar->groupBy('b.nama_barang');
                 $atkkeluar->orderBy('total_harga', 'DESC');
 
                 $hasil = $atkkeluar->get()->getResultArray();
