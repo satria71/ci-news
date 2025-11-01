@@ -45,21 +45,42 @@ class Laporan extends BaseController
         return view('laporan/cetaklaporanatkmasuk', $data);
     }
 
+    // public function laporanperperiodekeluar($tglawal, $tglakhir){
+    //         $db      = \Config\Database::connect();
+    //         $atkkeluar = $db->table('atk_keluar k');
+    //         // $data = $atkmasuk->where('tgl >=', $tglawal)->where('tgl <=', $tglakhir)->get();
+    //         $atkkeluar->select("
+    //                 k.no_sj,
+    //                 k.tgl,
+    //                 k.total_harga,
+    //                 COUNT(DISTINCT d.det_sj) AS total_item,
+    //             ");
+    //             $atkkeluar->join('detail_atk_keluar d', 'd.det_sj = k.no_sj', 'left');
+    //             $atkkeluar->where('k.tgl >=', $tglawal);
+    //             $atkkeluar->where('k.tgl <=', $tglakhir);
+    //             $atkkeluar->groupBy('k.no_sj'); // Grup per surat jalan
+    //             $atkkeluar->orderBy('k.tgl', 'ASC');
+
+    //             $hasil = $atkkeluar->get()->getResultArray();
+    //         return $hasil;
+    // }
+
     public function laporanperperiodekeluar($tglawal, $tglakhir){
             $db      = \Config\Database::connect();
-            $atkkeluar = $db->table('atk_keluar k');
+            $atkkeluar = $db->table('detail_atk_keluar d');
             // $data = $atkmasuk->where('tgl >=', $tglawal)->where('tgl <=', $tglakhir)->get();
             $atkkeluar->select("
-                    k.no_sj,
-                    k.tgl,
-                    k.total_harga,
-                    COUNT(DISTINCT d.det_sj) AS total_item,
+                    d.det_kode_barang AS kode_barang,
+                    b.nama_barang,
+                    SUM(d.det_jumlah) AS total_item,
+                    SUM(d.det_subtotal) AS total_harga
                 ");
-                $atkkeluar->join('detail_atk_keluar d', 'd.det_sj = k.no_sj', 'left');
-                $atkkeluar->where('k.tgl >=', $tglawal);
-                $atkkeluar->where('k.tgl <=', $tglakhir);
-                $atkkeluar->groupBy('k.no_sj'); // Grup per surat jalan
-                $atkkeluar->orderBy('k.tgl', 'ASC');
+                $builder->join('atk_keluar k', 'k.no_sj = d.det_sj');
+                $builder->join('master_barang b', 'b.kode_barang = d.det_kode_barang');
+                $builder->where('k.tgl >=', $tglawal);
+                $builder->where('k.tgl <=', $tglakhir);
+                $builder->groupBy('d.det_kode_barang');
+                $builder->orderBy('b.nama_barang', 'ASC');
 
                 $hasil = $atkkeluar->get()->getResultArray();
             return $hasil;

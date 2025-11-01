@@ -64,8 +64,8 @@
             <thead>
                 <tr>
                     <th>No.</td>
-                    <th>Surat Jalan</td>
-                    <th>Tanggal</th>
+                    <th>Kode Barang</td>
+                    <th>Nama Barang</th>
                     <th>Jumlah Item</th>
                     <th>Total Harga (Rp.)</th>
                 </tr>
@@ -79,8 +79,8 @@
                 ?>
                 <tr>
                     <td><?= $no++; ?></td>
-                    <td><?= $row['no_sj']; ?></td>
-                    <td><?= date('d M Y', strtotime($row['tgl'])); ?></td>
+                    <td><?= $row['kode_barang']; ?></td>
+                    <td><?= $row['nama_barang']; ?></td>
                     <td><?= $row['total_item']; ?></td>
                     <td><?= number_format($row['total_harga'],0,",","."); ?></td>
                 </tr>
