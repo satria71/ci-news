@@ -69,7 +69,7 @@ class Laporan extends BaseController
             $db      = \Config\Database::connect();
             $atkkeluar = $db->table('detail_atk_keluar d');
             // $data = $atkmasuk->where('tgl >=', $tglawal)->where('tgl <=', $tglakhir)->get();
-            $atkkeluar->$atkkeluar->select([
+            $atkkeluar->select([
                 'd.det_kode_barang AS kode_barang',
                 'b.nama_barang AS nama_barang',
                 'SUM(d.det_jumlah) AS total_item',
