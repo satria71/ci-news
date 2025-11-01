@@ -18,9 +18,9 @@ class Home extends BaseController
                 CASE 
                     WHEN stok >= 2*pkm THEN 'Over 2*pkm'
                     WHEN stok >= 1.5*pkm THEN 'Over 1.5*pkm'
-                    WHEN stok <= 1.5*pkm AND stok = pkm+1 THEN 'Over 1.5*pkm'
+                    WHEN stok > pkm THEN 'Over'
                     WHEN stok = pkm THEN 'Aman'
-                    ELSE 'Kurang'
+                    ELSE 'Under'
                 END AS status
             FROM master_atk
             ORDER BY stok DESC
