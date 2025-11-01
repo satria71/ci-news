@@ -80,7 +80,7 @@
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $row['kode_barang']; ?></td>
-                    <td><?= $row['nama_barang']; ?></td>
+                    <td style="text-align:left;"><?= $row['nama_barang']; ?></td>
                     <td><?= $row['total_item']; ?></td>
                     <td><?= number_format($row['total_harga'],0,",","."); ?></td>
                 </tr>
@@ -89,7 +89,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="4">Total seluruh harga</th>
+                    <th colspan="4">TOTAL SELURUH HARGA</th>
                     <td><?= number_format($totalseluruhharga,0,",","."); ?></td>
                 </tr>
             </tfoot>
