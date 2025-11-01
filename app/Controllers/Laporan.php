@@ -75,12 +75,12 @@ class Laporan extends BaseController
                     SUM(d.det_jumlah) AS total_item,
                     SUM(d.det_subtotal) AS total_harga
                 ");
-                $builder->join('atk_keluar k', 'k.no_sj = d.det_sj');
-                $builder->join('master_barang b', 'b.kode_barang = d.det_kode_barang');
-                $builder->where('k.tgl >=', $tglawal);
-                $builder->where('k.tgl <=', $tglakhir);
-                $builder->groupBy('d.det_kode_barang');
-                $builder->orderBy('b.nama_barang', 'ASC');
+                $atkkeluar->join('atk_keluar k', 'k.no_sj = d.det_sj');
+                $atkkeluar->join('master_barang b', 'b.kode_barang = d.det_kode_barang');
+                $atkkeluar->where('k.tgl >=', $tglawal);
+                $atkkeluar->where('k.tgl <=', $tglakhir);
+                $atkkeluar->groupBy('d.det_kode_barang');
+                $atkkeluar->orderBy('b.nama_barang', 'ASC');
 
                 $hasil = $atkkeluar->get()->getResultArray();
             return $hasil;
