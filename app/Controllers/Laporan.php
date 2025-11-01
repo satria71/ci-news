@@ -80,7 +80,7 @@ class Laporan extends BaseController
                 $atkkeluar->where('k.tgl >=', $tglawal);
                 $atkkeluar->where('k.tgl <=', $tglakhir);
                 $atkkeluar->groupBy('d.det_kode_barang');
-                $atkkeluar->orderBy('d.det_subtotal', 'ASC');
+                $atkkeluar->orderBy('k.total_harga', 'DESC');
 
                 $hasil = $atkkeluar->get()->getResultArray();
             return $hasil;
