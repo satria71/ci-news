@@ -483,7 +483,7 @@ class AtkKeluar extends BaseController
         $table         = 'atk_keluar a';                  // ganti dengan nama tabel
         $columnOrder   = [null,'a.no_sj','a.tgl','k.nama_karyawan','k.bagian','a.total_harga',null];         // kolom yang bisa di-order
         $columnSearch  = ['a.no_sj','k.nama_karyawan','k.bagian'];              // kolom yang bisa di-search
-        $defaultOrder  = ['a.no_sj' => 'DESC'];              // default order
+        $defaultOrder  = ['a.no_sj' => 'ASC'];              // default order
 
         // ===================== BASE QUERY =====================
         $builder = $db->table($table);
