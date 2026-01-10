@@ -536,7 +536,10 @@ class AtkKeluar extends BaseController
             $dir      = $orderPost[0]['dir'];
             $builder->orderBy($columnOrder[$colIndex], $dir);
         } else {
-            $builder->orderBy(key($defaultOrder), current($defaultOrder));
+            // $builder->orderBy(key($defaultOrder), current($defaultOrder));
+            foreach ($defaultOrder as $col => $dir) {
+                $builder->orderBy($col, $dir);
+            }
         }
 
         // -------- Paging --------
