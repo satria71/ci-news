@@ -105,10 +105,12 @@ class Laporan extends BaseController
     }
 
     public function tampilgrafikatkmasuk(){
-        $bulan = $this->request->getPost('bulan');
+        $tahun = $this->request->getPost('tahun');
         $db      = \Config\Database::connect();
 
-        $query = $db->query("select tgl as tanggal, total_harga from atk_masuk where date_format(tgl,'%Y-%m')='$bulan' order by tgl asc")
+        
+
+        $query = $db->query("select tgl as tanggal, total_harga from atk_masuk where date_format(tgl,'%Y')='$tahun' order by tgl asc")
         ->getResult();
 
         $data = [
@@ -120,6 +122,7 @@ class Laporan extends BaseController
         ];
 
         echo json_encode($json);
+        
     }
 
     public function tampilgrafikatkkeluar(){

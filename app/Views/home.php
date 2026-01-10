@@ -331,15 +331,23 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="bulan">Pilih Bulan</label>
+                      <label for="bulan">Pilih Tahun</label>
                       <div class="input-group">
-                          <input 
+                        <select id="tahun" class="form-control" required>
+                          <?php
+                            $tahun_sekarang = date('Y');
+                            for ($i = $tahun_sekarang; $i >= $tahun_sekarang - 10; $i--) {
+                              echo "<option value='$i'>$i</option>";
+                            }
+                          ?>
+                        </select>
+                          <!-- <input 
                             type="month"
                             id="bulan" 
                             class="form-control" 
-                            value="<?= date('Y-m') ?>"
+                            value="<?= date('Y') ?>"
                             required
-                          >
+                          > -->
                           <button type="button" class="btn btn-primary btn-sm" id="tomboltampil">
                             <i class="fas fa-search"></i> Tampilkan
                           </button>
@@ -384,7 +392,7 @@ function tampilgrafik(){
     type: "post",
     url: "laporan/tampilgrafikatkmasuk",
     data: {
-      bulan : $('#bulan').val()
+      tahun : $('#tahun').val()
     },
     dataType: "json",
     beforeSend:function(){
