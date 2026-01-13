@@ -309,7 +309,8 @@ class AtkMasuk extends BaseController
              COUNT(d.det_sj) AS jumlah_data,
              a.total_harga')
         ->join('detail_atk_masuk d', 'd.det_sj = a.no_sj', 'left')   // join manual
-        ->groupBy('a.no_sj');
+        ->groupBy('a.no_sj')
+        ->orderBy('a.tgl', 'DESC');
 
         $query = $builder->get();
         $data = $query->getResult();
