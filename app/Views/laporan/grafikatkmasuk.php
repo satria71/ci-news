@@ -44,7 +44,7 @@
             },
             title: {
                 display: true,
-                text: 'Grafik ATK Masuk per Tanggal',
+                text: 'Grafik ATK Masuk per Bulan',
                 fontSize: 18,
                 fontColor: '#111'
             },
