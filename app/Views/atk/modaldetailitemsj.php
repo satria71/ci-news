@@ -7,6 +7,14 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <?php 
+          $totalharga = 0;
+          $jumlahitem = 0;
+          foreach ($tampildatadetail as $row) :
+          $totalharga += $row['det_subtotal'];
+          $jumlahitem += $row['det_jumlah'];
+          endforeach;
+      ?>
       <div class="modal-body table-responsive table-bordered table-hover">
         <table class="table table-striped table-sm">
             <thead>
@@ -32,8 +40,12 @@
                     <td style="text-align: right;"><?= number_format($row['det_jumlah'],0,",",".")?></td>
                     <td style="text-align: right;"><?= number_format($row['det_subtotal'],0,",",".")?></td>
                 </tr>
-
                 <?php endforeach; ?>
+                <tr>
+                  <td style="font-weight:bold;" colspan="4">Total</td>
+                  <td style="text-align: right; font-weight:bold;"><?= $jumlahitem ?></td>
+                  <td style="text-align: right; font-weight:bold;"><?= number_format($totalharga,0,",",".") ?></td>
+                </tr>
             </tbody>
 
         </table>
