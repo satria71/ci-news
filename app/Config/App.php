@@ -18,7 +18,7 @@ class App extends BaseConfig
      */
     //untuk local development
     public string $baseURL = 'http://localhost:8080/';
-    public int $sessionExpiration = 300; // 5 menit
+    // public int $sessionExpiration = 300; // 5 menit
     // public string $baseURL = '';
 
         //untuk server
