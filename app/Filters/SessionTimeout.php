@@ -22,7 +22,7 @@ class SessionTimeout implements FilterInterface
                 // ✅ JIKA REQUEST AJAX
                 if ($request->isAJAX()) {
                     return service('response')
-                        // ->setStatusCode(401)
+                        ->setStatusCode(401)
                         ->setJSON([
                             'session_expired' => true,
                             'message' => 'Session habis, silakan login ulang',
