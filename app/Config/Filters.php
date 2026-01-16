@@ -121,6 +121,11 @@ class Filters extends BaseFilters
                 '/',
                 'masteratk',
                 'masteratk/*',
+                'atk/*',
+                'atkmasuk/*',
+                'atkkeluar/*',
+                'karyawan/*',
+                'laporan/*',
             ]   
         ]
     ];
