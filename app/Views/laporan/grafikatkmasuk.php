@@ -5,7 +5,8 @@
     $total = "";
 
     foreach($grafik as $row) :
-        $tgl = $row->tanggal;
+        // $tgl = $row->tanggal;
+        $tgl = date('F', strtotime($row->tanggal));
         $tanggal .="'$tgl'" .",";
 
         $totalharga = $row->total_harga;
