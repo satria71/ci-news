@@ -13,6 +13,7 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\LoginFilter;
+use App\Filters\SessionTimeout;
 
 class Filters extends BaseFilters
 {
