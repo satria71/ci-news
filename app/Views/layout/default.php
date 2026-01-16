@@ -108,6 +108,17 @@
       </footer>
     </div>
   </div>
+  <script>
+    $(document).ajaxError(function(event, xhr) {
+        if (xhr.status === 401) {
+            let res = xhr.responseJSON;
+            if (res && res.session_expired) {
+                alert(res.message);
+                window.location.href = res.redirect;
+            }
+        }
+    });
+  </script>
 
   
 

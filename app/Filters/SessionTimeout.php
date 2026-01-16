@@ -16,12 +16,26 @@ class SessionTimeout implements FilterInterface
             $lastActivity = session()->get('last_activity');
 
             if ($lastActivity && (time() - $lastActivity) > $timeout) {
+
                 session()->destroy();
+
+                // ✅ JIKA REQUEST AJAX
+                if ($request->isAJAX()) {
+                    return service('response')
+                        ->setStatusCode(401)
+                        ->setJSON([
+                            'session_expired' => true,
+                            'message' => 'Session habis, silakan login ulang',
+                            'redirect' => site_url('login')
+                        ]);
+                }
+
+                // ✅ JIKA REQUEST BIASA
                 return redirect()->to(site_url('login'))
                     ->with('error', 'Session habis karena tidak ada aktivitas');
             }
 
-            // update aktivitas
+            // 🔄 update waktu aktivitas
             session()->set('last_activity', time());
         }
     }
