@@ -17,12 +17,12 @@ class App extends BaseConfig
      * E.g., http://example.com/
      */
     //untuk local development
-    public string $baseURL = 'http://localhost:8080/';
-    // public int $sessionExpiration = 300; // 5 menit
+    // public string $baseURL = 'http://localhost:8080/';
+    public int $sessionExpiration = 300; // 5 menit
     // public string $baseURL = '';
 
         //untuk server
-    // public string $baseURL = BASE;
+    public string $baseURL = BASE;
 
     // $baseURL = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
     // $baseURL .= "://" . $_SERVER['HTTP_HOST'];
