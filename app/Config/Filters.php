@@ -36,6 +36,7 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'isLoggedIn' => LoginFilter::class,
+        'sessiontimeout' => SessionTimeout::class,
     ];
 
     /**
@@ -83,6 +84,7 @@ class Filters extends BaseFilters
 
     public array $globals = [
     'before' => [
+        'sessiontimeout',
         // 'csrf' => ['except' => ['masteratk/dt_masteratk'], ['masteratk/delete']],
     ],
     'after'  => [

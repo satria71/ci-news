@@ -30,7 +30,8 @@ class Auth extends BaseController
             if(password_verify($post['password'], $user->password)){
                 $params = [
                     'id_user' => $user->id,
-                    'nama' => $user->nama_karyawan
+                    'nama' => $user->nama_karyawan,
+                    'last_activity'  => time() // ⏱ simpan waktu aktivitas terakhir
                 ];
 
                 session()->set($params)
